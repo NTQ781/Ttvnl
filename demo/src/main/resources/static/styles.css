@@ -1,0 +1,435 @@
+/* =========================================================
+   RESET
+========================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Khoảng cách dọc giữa các hàng chữ cái */
+    --alpha-row-gap: 18px;
+    /* Kích thước ô chữ cái (desktop) */
+    --alpha-cell-size: 70px;
+}
+
+/* =========================================================
+   BODY & WRAPPER
+========================================================= */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #a7f3d0 0%, #a3e4d7 100%); /* Xanh pastel */
+    min-height: 100vh;
+    color: #333;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo h1 {
+    font-size: 2.5rem;
+    color: #4a5568;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.japanese-flag {
+    width: 60px;
+    aspect-ratio: 4 / 3;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
+    border: 1px solid #ccc;
+    background-image: url("https://1.bp.blogspot.com/-g-wChnBkdvw/U7pGUIu2PqI/AAAAAAAAHfU/n4gBFoDRWM4/s1600/quoc+ky+nhat+ban+-+du+hoc+nhat+ban.gif");
+}
+
+.nav-menu {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Nút mặc định: xanh dương gradient */
+.nav-btn {
+  background: linear-gradient(45deg, #2563eb, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.nav-btn:hover {
+  background: linear-gradient(45deg, #e60012, #ff6b6b); /* đỏ khi hover */
+}
+
+.nav-btn.active {
+  background: linear-gradient(45deg, #e60012, #ff6b6b); /* đỏ khi bấm */
+}
+
+
+
+/* =========================================================
+   MAIN CONTENT (2 cột: bảng / tiến độ)
+========================================================= */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    color: #2d3748;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+/* =========================================================
+   ALPHABET SECTION — STYLE GỐC (để giữ theme)
+========================================================= */
+.alphabet-grid {
+    margin-bottom: 20px;
+}
+
+/* Nút chữ cái (style gốc) */
+.char-btn {
+    background: linear-gradient(45deg, #f7fafc, #edf2f7);
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 15px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.char-btn:hover {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    transform: scale(1.05);
+}
+
+.char-btn.selected {
+    background: linear-gradient(45deg, #e60012, #ff6b6b);
+    color: white;
+    border-color: #e60012;
+}
+
+/* Hộp phát âm */
+.pronunciation {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background: linear-gradient(45deg, #f0f9ff, #e0f2fe);
+    border-radius: 15px;
+    border: 2px solid #0ea5e9;
+}
+
+.pronunciation h3 {
+    color: #0c4a6e;
+    margin-bottom: 10px;
+}
+
+.pronunciation p {
+    font-size: 1.4rem;
+    color: #075985;
+    font-weight: 600;
+}
+
+/* =========================================================
+   VOCAB SECTION (nguyên bản)
+========================================================= */
+.vocab-item {
+    background: linear-gradient(45deg, #fef3c7, #fde68a);
+    border: 2px solid #f59e0b;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.vocab-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
+.vocab-japanese {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 5px;
+}
+
+.vocab-reading {
+    font-size: 1.2rem;
+    color: #b45309;
+    margin-bottom: 5px;
+}
+
+.vocab-meaning {
+    font-size: 1.1rem;
+    color: #78350f;
+    font-weight: 600;
+}
+
+
+
+/* =========================================================
+   QUIZ SECTION (nguyên bản)
+========================================================= */
+.quiz-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-question {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.quiz-character {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 20px;
+}
+
+.quiz-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.quiz-option {
+    background: linear-gradient(45deg, #f7fafc, #edf2f7);
+    border: 2px solid #e2e8f0;
+    border-radius: 15px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.quiz-option:hover {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    transform: scale(1.02);
+}
+
+.quiz-option.correct {
+    background: linear-gradient(45deg, #10b981, #34d399);
+    color: white;
+    border-color: #10b981;
+}
+
+.quiz-option.incorrect {
+    background: linear-gradient(45deg, #ef4444, #f87171);
+    color: white;
+    border-color: #ef4444;
+}
+
+.quiz-result {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.quiz-result.correct {
+    background: linear-gradient(45deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+    border: 2px solid #10b981;
+}
+
+.quiz-result.incorrect {
+    background: linear-gradient(45deg, #fecaca, #fca5a5);
+    color: #7f1d1d;
+    border: 2px solid #ef4444;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .quiz-options {
+        grid-template-columns: 1fr;
+    }
+
+    /* Kích thước ô chữ cái nhỏ hơn trên mobile */
+    :root {
+        --alpha-cell-size: 56px;
+        --alpha-row-gap: 12px;
+    }
+
+    .alpha-row .char-btn {
+        height: var(--alpha-cell-size);
+        font-size: 1.4rem;
+    }
+}
+
+/* =========================================================
+   OVERRIDE CHO BẢNG CHỮ CÁI THEO HÀNG (JS thêm class)
+========================================================= */
+
+/* Khi JS thêm .alphabet-rows vào #alphabet-grid,
+   ta chuyển layout sang danh sách hàng chứ không grid phẳng. */
+.alphabet-grid.alphabet-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--alpha-row-gap);
+    margin-bottom: 20px;
+}
+
+/* Mỗi hàng = 5 cột */
+.alpha-row {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+}
+
+/* Nút trong bảng (kế thừa .char-btn; chỉnh kích thước đều) */
+.alpha-row .char-btn {
+    width: 100%;
+    height: var(--alpha-cell-size);
+    padding: 0;
+    font-size: 1.8rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ô trống giữ khoảng (hàng や, わ, ん) */
+.alpha-row .char-empty {
+    width: 100%;
+    height: var(--alpha-cell-size);
+    visibility: hidden;
+    pointer-events: none;
+}
+.quiz-option {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 6px 0;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.quiz-option:hover {
+  background: #e0f2fe;
+}
+.quiz-option.correct {
+  background: #d1fae5;
+  border-color: #10b981;
+}
+.quiz-option.wrong {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+.study-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 10px 0;
+}
+.reading-title {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.reading-title:hover {
+  color: #2563eb; /* xanh lam nhạt khi hover */
+  text-decoration: underline;
+}

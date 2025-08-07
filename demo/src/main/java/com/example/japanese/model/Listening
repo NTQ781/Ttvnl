@@ -1,0 +1,33 @@
+package com.example.japanese.model;
+
+import java.util.List;
+
+public class Listening {
+    private String title;
+    private String audio;
+    private String description;
+    private String script;
+    private List<Question> questions;
+
+    public Listening() {}
+
+    public Listening(String title, String audio, String description, String script, List<Question> questions) {
+        this.title = title;
+        this.audio = audio;
+        this.description = description;
+        this.script = script;
+        this.questions = questions;
+    }
+
+    // Getters and setters
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getAudio() { return audio; }
+    public void setAudio(String audio) { this.audio = audio; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getScript() { return script; }
+    public void setScript(String script) { this.script = script; }
+    public List<Question> getQuestions() { return questions; }
+    public void setQuestions(List<Question> questions) { this.questions = questions; }
+}

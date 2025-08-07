@@ -1,0 +1,18 @@
+package com.example.japanese.model;
+
+public class Question {
+    private String question;
+    private String placeholder;
+
+    public Question() {}
+
+    public Question(String question, String placeholder) {
+        this.question = question;
+        this.placeholder = placeholder;
+    }
+
+    public String getQuestion() { return question; }
+    public void setQuestion(String question) { this.question = question; }
+    public String getPlaceholder() { return placeholder; }
+    public void setPlaceholder(String placeholder) { this.placeholder = placeholder; }
+}
