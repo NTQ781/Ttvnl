@@ -1,10 +1,10 @@
 services:
   - type: web
-    name: ttvnl-demo
+    name: japanese-demo
     env: docker
-    plan: free
-    dockerContext: ./demo
+    buildContext: ./demo
     dockerfilePath: ./demo/Dockerfile
+    plan: free
     envVars:
-      - key: JAVA_TOOL_OPTIONS
-        value: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+      - key: PORT
+        value: 8080
