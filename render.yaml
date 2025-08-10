@@ -1,5 +1,11 @@
 services:
   - type: web
-    name: your-app
-    env: docker
-    dockerfilePath: ./demo/Dockerfile  # Nếu Dockerfile ở trong demo/
+    name: ttvnl-app
+    runtime: docker
+    dockerfilePath: ./demo/Dockerfile
+    dockerContext: ./demo
+    
+    # Cấu hình tối thiểu
+    envVars:
+      - key: PORT
+        value: 8080
