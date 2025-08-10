@@ -1,19 +1,33 @@
-# Sử dụng Maven để build
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Stage build
+FROM eclipse-temurin:17-jdk AS build
 WORKDIR /app
 
-# Copy toàn bộ project
-COPY . .
+# Copy Maven wrapper files
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
 
-# Build dự án (bỏ test nếu không cần)
-RUN mvn clean package -DskipTests
+# Make mvnw executable and download dependencies
+RUN chmod +x ./mvnw
+RUN ./mvnw dependency:go-offline -B
 
-# Stage chạy app
-FROM eclipse-temurin:17-jdk
+# Copy source code
+COPY src ./src
+
+# Build project
+RUN ./mvnw clean package -DskipTests
+
+# Stage runtime
+FROM eclipse-temurin:17-jdk-slim
 WORKDIR /app
 
-# Copy file JAR từ stage build
+# Copy JAR file
 COPY --from=build /app/target/*.jar app.jar
 
-# Chạy ứng dụng
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Create non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+RUN chown appuser:appuser app.jar
+USER appuser
+
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
