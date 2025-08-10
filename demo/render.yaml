@@ -4,7 +4,7 @@ services:
     env: docker
     plan: free
     dockerfilePath: demo/Dockerfile
-    buildContext: demo
+    buildContext: .
     autoDeploy: true
     envVars:
       - key: PORT
