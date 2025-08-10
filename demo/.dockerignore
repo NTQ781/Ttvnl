@@ -1,4 +1,6 @@
-target
-.idea
-*.iml
-*.log
+target/
+.git
+.gitignore
+Dockerfile
+docker-compose.yml
+*.md
