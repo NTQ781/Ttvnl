@@ -1,19 +1,13 @@
-# Sử dụng image Maven để build
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+FROM eclipse-temurin:17-jdk AS build
+
 WORKDIR /app
 
-# Copy toàn bộ dự án (bao gồm Maven Wrapper và các file cần thiết)
-COPY . .
+COPY demo/. .
 
-# Build ứng dụng Spring Boot (tạo file jar)
+RUN chmod +x mvnw
 RUN ./mvnw clean package -DskipTests
 
-# Sử dụng image Java để chạy ứng dụng
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:17-jre
 WORKDIR /app
-
-# Copy file jar từ bước build
 COPY --from=build /app/target/*.jar app.jar
-
-# Chạy ứng dụng
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
