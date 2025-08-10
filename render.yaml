@@ -1,10 +1,10 @@
 services:
   - type: web
-    name: japanese-demo
+    name: ttvnl-demo
     env: docker
     buildContext: ./demo
-    dockerfilePath: ./demo/Dockerfile
     plan: free
+    autoDeploy: true
     envVars:
       - key: PORT
         value: 8080
