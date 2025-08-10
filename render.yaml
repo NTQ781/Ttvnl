@@ -3,9 +3,10 @@ services:
     name: ttvnl-app
     runtime: docker
     dockerfilePath: ./demo/Dockerfile
-    dockerContext: ./demo
+    dockerContext: ./demo          # Context build từ demo/
     
-    # Cấu hình tối thiểu
     envVars:
       - key: PORT
         value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
