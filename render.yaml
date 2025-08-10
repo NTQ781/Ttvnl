@@ -1,12 +1,10 @@
 services:
   - type: web
-    name: ttvnl-app
-    runtime: docker
+    name: japanese-demo
+    env: docker
+    plan: free
+    buildContext: ./demo
     dockerfilePath: ./demo/Dockerfile
-    dockerContext: ./demo          # Context build từ demo/
-    
     envVars:
       - key: PORT
         value: 8080
-      - key: SPRING_PROFILES_ACTIVE
-        value: prod
