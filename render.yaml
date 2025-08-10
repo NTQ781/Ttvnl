@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: ttvnl-demo
+    env: docker
+    buildContext: ./demo
+    dockerfilePath: ./demo/Dockerfile
+    plan: free
+    branch: main
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 8080
