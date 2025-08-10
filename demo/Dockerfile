@@ -1,20 +1,22 @@
-# Sử dụng Maven + Java 17 để build
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Sử dụng JDK 17 để build
+FROM eclipse-temurin:17-jdk AS build
 WORKDIR /app
 
-# Copy file cấu hình Maven và tải dependencies trước
-COPY pom.xml .
+# Copy Maven Wrapper và file cấu hình
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+
+# Download dependencies trước để cache
+RUN ./mvnw dependency:go-offline
+
+# Copy toàn bộ source
 COPY src ./src
 
-# Build project
-RUN mvn clean package -DskipTests
-
-# Sử dụng JDK nhẹ để chạy
-FROM eclipse-temurin:17-jdk
-WORKDIR /app
-
-# Copy file JAR từ bước build
-COPY --from=build /app/target/*.jar app.jar
+# Build jar
+RUN ./mvnw package -DskipTests
 
 # Chạy ứng dụng
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
