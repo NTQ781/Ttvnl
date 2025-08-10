@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 # Build dự án (bỏ test nếu không cần)
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Stage chạy app
 FROM eclipse-temurin:17-jdk
