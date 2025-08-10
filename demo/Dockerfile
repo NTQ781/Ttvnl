@@ -1,27 +1,30 @@
 # Stage build
-FROM eclipse-temurin:17-jdk AS build
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy toàn bộ thư mục hiện tại (demo/)
+# Copy project files
 COPY . .
 
-# Cấp quyền thực thi cho mvnw và build
-RUN chmod +x ./mvnw && ./mvnw clean package -DskipTests
+# Build project
+RUN mvn clean package -DskipTests
+
+# Tìm và rename JAR file để tránh wildcard issues
+RUN find target -name "*.jar" -not -name "*-sources.jar" -not -name "*-javadoc.jar" | head -1 | xargs -I {} cp {} app.jar
 
 # Stage runtime
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
-# Tạo user không có quyền root
+# Create non-root user
 RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 
-# Copy JAR file
-COPY --from=build /app/target/*.jar app.jar
+# Copy JAR with specific name
+COPY --from=build /app/app.jar app.jar
 
-# Thay đổi quyền sở hữu
+# Set ownership
 RUN chown appuser:appgroup app.jar
 
-# Chuyển sang user không có quyền root
+# Switch to non-root user
 USER appuser
 
 EXPOSE 8080
