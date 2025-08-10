@@ -1,6 +1,2 @@
 target/
-.git
-.gitignore
-Dockerfile
-docker-compose.yml
-*.md
+.mvn/wrapper/maven-wrapper.jar
