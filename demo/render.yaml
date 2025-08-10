@@ -1,8 +1,7 @@
 services:
   - type: web
-    name: ttvnl-demo
+    name: ttvnl
     env: docker
-    dockerfilePath: demo/Dockerfile
-    buildContext: demo
-    branch: main
     plan: free
+    buildContext: ./demo
+    dockerfilePath: ./Dockerfile
