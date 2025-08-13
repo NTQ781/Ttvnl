@@ -50,45 +50,40 @@ const hiraganaOrder = [
     ['わ','を','ん']
 ];
 
-// Thêm logic tab-switching và flashcard
+// Thêm logic tab-switching và flashcard với kiểm tra DOM
 document.addEventListener('DOMContentLoaded', () => {
-    // Lấy dữ liệu từ vựng từ Thymeleaf (nếu có)
-    const flashcards = window.vocabData || []; // vocabData được nhúng từ Thymeleaf
+    console.log("DOM loaded");
+    const studyButtons = document.querySelector('.study-buttons');
+    if (!studyButtons) {
+        console.error("Study buttons not found");
+        return;
+    }
+
+    const flashcards = window.vocabData || vocabularyData; // Fallback to static data if Thymeleaf fails
     let currentCardIndex = 0;
     let isFlipped = false;
 
-    // Hàm chuyển đổi tab
     function switchTab(event) {
         const section = event.target.dataset.section;
         if (!section) return;
 
-        // Ẩn tất cả nội dung
-        document.querySelectorAll('.content-section').forEach(el => {
-            el.style.display = 'none';
-        });
+        console.log("Switching to section:", section);
+        const contents = document.querySelectorAll('.vocab-content, .kanji-content, .grammar-content, .exercise-content, .flashcard-content');
+        contents.forEach(el => el.style.display = 'none');
 
-        // Hiển thị nội dung tương ứng
-        const targetSection = document.getElementById(`${section}-content`);
-        if (targetSection) {
-            targetSection.style.display = 'block';
+        const target = document.querySelector(`.${section}-content`);
+        if (target) {
+            target.style.display = 'block';
         }
 
-        // Highlight nút được chọn
-        document.querySelectorAll('.study-buttons button').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        event.target.classList.add('active');
-
-        // Nếu là flashcard, khởi tạo
         if (section === 'flashcard') {
             displayFlashcards();
         }
     }
 
-    // Hàm hiển thị flashcard
     function displayFlashcards() {
-        const flashcardContainer = document.getElementById('flashcard-content');
-        if (!flashcards.length) {
+        const flashcardContainer = document.querySelector('.flashcard-content');
+        if (!flashcardContainer || !flashcards.length) {
             flashcardContainer.innerHTML = '<p>Chưa có flashcard.</p>';
             return;
         }
@@ -108,13 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // Hàm lật thẻ
     window.flipCard = function() {
         isFlipped = !isFlipped;
         displayFlashcards();
     };
 
-    // Hàm chuyển thẻ tiếp theo
     window.nextCard = function() {
         if (currentCardIndex < flashcards.length - 1) {
             currentCardIndex++;
@@ -123,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Hàm quay lại thẻ trước
     window.prevCard = function() {
         if (currentCardIndex > 0) {
             currentCardIndex--;
@@ -132,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Hàm đánh dấu đã nhớ
     window.markAsKnown = function() {
         flashcards.splice(currentCardIndex, 1);
         if (currentCardIndex >= flashcards.length) {
@@ -141,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
         displayFlashcards();
     };
 
-    // Gắn sự kiện cho nút study-buttons
     document.querySelectorAll('.study-buttons button').forEach(btn => {
         btn.addEventListener('click', switchTab);
     });
@@ -149,11 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mặc định hiển thị mục Từ vựng
     const vocabBtn = document.querySelector('.study-buttons button[data-section="vocabulary"]');
     if (vocabBtn) {
-        vocabBtn.click(); // Kích hoạt mục Từ vựng khi load
+        vocabBtn.click();
     }
 });
 
-// Giữ nguyên các phần còn lại (listening, quiz, v.v.)
+// Giữ nguyên các phần còn lại
 function displayListening() {
     const listeningContainer = document.querySelector('.listening-content');
     listeningContainer.innerHTML = listeningData.map((item, index) => `
@@ -171,9 +161,7 @@ function displayListening() {
                 📄 Bài nghe
             </div>
             <div id="script-text-${index}" style="display: none; white-space: pre-wrap; border-left: 3px solid #ccc; padding-left: 10px; margin-bottom: 12px;">
-                ${item.script || "<
-
-i>Chưa có nội dung bài nghe</i>"}
+                ${item.script || "<i>Chưa có nội dung bài nghe</i>"}
             </div>
             <div class="fill-question" id="fill-question-${index}" style="display: none;">
                 ${item.questions.map((q, i) => `
