@@ -122,11 +122,11 @@
                     <div class="japanese-flag"></div>
                 </div>
                 <nav class="nav-menu">
-                    <a th:href="@{'/level/n2'}" class="nav-btn">📝 Từ vựng</a>
-                    <a th:href="@{'/level/n2'}" class="nav-btn">🔤 Kanji</a>
-                    <a th:href="@{'/level/n2'}" class="nav-btn">📘 Ngữ pháp</a>
-                    <a th:href="@{'/level/n2'}" class="nav-btn">📝 Bài tập</a>
-                    <a th:href="@{'/level/n2'}" class="nav-btn active">🃏 Flashcard</a>
+                    <a href="javascript:void(0)" class="nav-btn" onclick="showSection('vocab')">📝 Từ vựng</a>
+                    <a href="javascript:void(0)" class="nav-btn" onclick="showSection('kanji')">🔤 Kanji</a>
+                    <a href="javascript:void(0)" class="nav-btn" onclick="showSection('grammar')">📘 Ngữ pháp</a>
+                    <a href="javascript:void(0)" class="nav-btn" onclick="showSection('exercise')">📝 Bài tập</a>
+                    <a href="javascript:void(0)" class="nav-btn active" onclick="showSection('flashcard')">🃏 Flashcard</a>
                     <a th:href="@{'/listening/n2'}" class="nav-btn">🎧 Nghe-hiểu</a>
                 </nav>
             </div>
@@ -134,7 +134,7 @@
 
         <div class="main-content">
             <div class="card" style="max-width: 700px; margin: auto;">
-                <h2 style="text-align: center; cursor: pointer;" th:onclick="'window.location.href=\'/level/n2\''">📘 Cấp độ N2</h2>
+                <h2 style="text-align: center; cursor: pointer;" onclick="showSection('vocab')">📘 Cấp độ N2</h2>
                 <div class="study-buttons">
                     <button class="btn-vocab" onclick="showSection('vocab')">📝 Từ vựng</button>
                     <button class="btn-kanji" onclick="showSection('kanji')">🔤 Kanji</button>
