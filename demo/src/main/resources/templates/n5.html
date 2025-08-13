@@ -254,26 +254,29 @@
     <script th:src="@{/script.js}"></script>
     <script th:inline="javascript">
         const content = {
-            vocab: /*[[${vocabularyList}]]*/ [
-                <th:block th:each="item, iter : ${vocabularyList}">
-                    { word: /*[[${item.japanese}]]*/ "", meaning: /*[[${item.meaning}]]*/ "" }<th:block th:if="${!iter.last}">,</th:block>
-                </th:block>
-            ],
-            kanji: /*[[${kanaList}]]*/ [
-                <th:block th:each="item, iter : ${kanaList}">
-                    { char: /*[[${item.kana}]]*/ "", kun: /*[[${item.kun ?: ''}]]*/ "", on: /*[[${item.on ?: ''}]]*/ "", meaning: /*[[${item.meaning}]]*/ "", vocab: /*[[${item.vocab}]]*/ "" }<th:block th:if="${!iter.last}">,</th:block>
-                </th:block>
-            ],
-            grammar: /*[[${grammarList}]]*/ [
-                <th:block th:each="item, iter : ${grammarList}">
-                    { form: /*[[${item.form}]]*/ "", meaning: /*[[${item.meaning}]]*/ "", example: /*[[${item.example}]]*/ "" }<th:block th:if="${!iter.last}">,</th:block>
-                </th:block>
-            ],
-            quizList: /*[[${exerciseList}]]*/ [
-                <th:block th:each="item, iter : ${exerciseList}">
-                    { question: /*[[${item.question}]]*/ "", options: /*[[${item.options}]]*/ [], correct: /*[[${item.correct}]]*/ "" }<th:block th:if="${!iter.last}">,</th:block>
-                </th:block>
-            ]
+                    vocab: [
+            /*[[
+                ${#lists.isEmpty(vocabularyList) ? '' : ''}
+            ]]*/
+            <th:block th:each="item, iter : ${vocabularyList}">
+                { word: '[[${item.japanese}]]', meaning: '[[${item.meaning}]]' }<th:block th:if="${!iter.last}">,</th:block>
+            </th:block>
+        ],
+        kanji: [
+            <th:block th:each="item, iter : ${kanaList}">
+                { char: '[[${item.kana}]]', kun: '[[${item.kun ?: ""}]]', on: '[[${item.on ?: ""}]]', meaning: '[[${item.meaning}]]', vocab: '[[${item.vocab}]]' }<th:block th:if="${!iter.last}">,</th:block>
+            </th:block>
+        ],
+        grammar: [
+            <th:block th:each="item, iter : ${grammarList}">
+                { form: '[[${item.form}]]', meaning: '[[${item.meaning}]]', example: '[[${item.example}]]' }<th:block th:if="${!iter.last}">,</th:block>
+            </th:block>
+        ],
+        quizList: [
+            <th:block th:each="item, iter : ${exerciseList}">
+                { question: '[[${item.question}]]', options: [[${item.options}]], correct: '[[${item.correct}]]' }<th:block th:if="${!iter.last}">,</th:block>
+            </th:block>
+        ]
         };
 
         function showSection(type) {
