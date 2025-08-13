@@ -1017,7 +1017,7 @@ public class HomeController {
         new Exercise("すみません、えきは　どこ___　ありますか？", Arrays.asList("に", "で", "を"), "に", "N5")
     );
 
-@GetMapping("/")
+    @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("title", "日本語学習");
         return "index";
@@ -1050,6 +1050,6 @@ public class HomeController {
         model.addAttribute("grammarList", levelGrammar);
         model.addAttribute("exerciseList", levelExercise);
         model.addAttribute("level", level.toLowerCase());
-        return "n" + level.toLowerCase(); // Sửa thành tên template đúng (n1, n2, v.v.)
+        return level.toLowerCase(); // Quay lại cách ban đầu
     }
 }
