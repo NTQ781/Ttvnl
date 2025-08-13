@@ -1050,6 +1050,6 @@ public String levelPage(@PathVariable String level, Model model) {
     model.addAttribute("grammarList", levelGrammar);
     model.addAttribute("exerciseList", levelExercise);
     model.addAttribute("level", level.toLowerCase());
-    return level;
+    return level.toLowerCase();
 }
 }
