@@ -1017,10 +1017,10 @@ public class HomeController {
         new Exercise("すみません、えきは　どこ___　ありますか？", Arrays.asList("に", "で", "を"), "に", "N5")
     );
 
-    @GetMapping("/")
+  @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("title", "日本語学習");
-        return "index";
+        return "index"; // Đảm bảo trả về index.html
     }
 
     @GetMapping("/level/{level}")
@@ -1050,6 +1050,6 @@ public class HomeController {
         model.addAttribute("grammarList", levelGrammar);
         model.addAttribute("exerciseList", levelExercise);
         model.addAttribute("level", level.toLowerCase());
-        return level.toLowerCase(); // Quay lại cách ban đầu
+        return level.toLowerCase(); // Giữ nguyên cách ban đầu
     }
 }
