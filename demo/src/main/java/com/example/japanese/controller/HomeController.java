@@ -1017,39 +1017,39 @@ public class HomeController {
         new Exercise("すみません、えきは　どこ___　ありますか？", Arrays.asList("に", "で", "を"), "に", "N5")
     );
 
-    @GetMapping("/")
+@GetMapping("/")
     public String index(Model model) {
         model.addAttribute("title", "日本語学習");
         return "index";
     }
 
- @GetMapping("/level/{level}")
-public String levelPage(@PathVariable String level, Model model) {
-    List<Vocabulary> levelVocab = vocabularyData.stream()
-        .filter(v -> v.getLevel().equalsIgnoreCase(level))
-        .collect(Collectors.toList());
-    List<Kanji> levelKanji = kanjiData.stream()
-        .filter(k -> k.getLevel().equalsIgnoreCase(level))
-        .collect(Collectors.toList());
-    List<Grammar> levelGrammar = grammarData.stream()
-        .filter(g -> g.getLevel().equalsIgnoreCase(level))
-        .collect(Collectors.toList());
-    List<Exercise> levelExercise = exerciseData.stream()
-        .filter(e -> e.getLevel().equalsIgnoreCase(level))
-        .collect(Collectors.toList());
+    @GetMapping("/level/{level}")
+    public String levelPage(@PathVariable String level, Model model) {
+        List<Vocabulary> levelVocab = vocabularyData.stream()
+            .filter(v -> v.getLevel().equalsIgnoreCase(level))
+            .collect(Collectors.toList());
+        List<Kanji> levelKanji = kanjiData.stream()
+            .filter(k -> k.getLevel().equalsIgnoreCase(level))
+            .collect(Collectors.toList());
+        List<Grammar> levelGrammar = grammarData.stream()
+            .filter(g -> g.getLevel().equalsIgnoreCase(level))
+            .collect(Collectors.toList());
+        List<Exercise> levelExercise = exerciseData.stream()
+            .filter(e -> e.getLevel().equalsIgnoreCase(level))
+            .collect(Collectors.toList());
 
-    System.out.println("Level: " + level);
-    System.out.println("Vocabulary size: " + levelVocab.size());
-    System.out.println("Kanji size: " + levelKanji.size());
-    System.out.println("Grammar size: " + levelGrammar.size());
-    System.out.println("Exercise size: " + levelExercise.size());
+        System.out.println("Level: " + level);
+        System.out.println("Vocabulary size: " + levelVocab.size());
+        System.out.println("Kanji size: " + levelKanji.size());
+        System.out.println("Grammar size: " + levelGrammar.size());
+        System.out.println("Exercise size: " + levelExercise.size());
 
-    model.addAttribute("title", "Cấp độ " + level.toUpperCase());
-    model.addAttribute("vocabularyList", levelVocab);
-    model.addAttribute("kanaList", levelKanji);
-    model.addAttribute("grammarList", levelGrammar);
-    model.addAttribute("exerciseList", levelExercise);
-    model.addAttribute("level", level.toLowerCase());
-    return level.toLowerCase();
-}
+        model.addAttribute("title", "Cấp độ " + level.toUpperCase());
+        model.addAttribute("vocabularyList", levelVocab);
+        model.addAttribute("kanaList", levelKanji);
+        model.addAttribute("grammarList", levelGrammar);
+        model.addAttribute("exerciseList", levelExercise);
+        model.addAttribute("level", level.toLowerCase());
+        return "n" + level.toLowerCase(); // Sửa thành tên template đúng (n1, n2, v.v.)
+    }
 }
