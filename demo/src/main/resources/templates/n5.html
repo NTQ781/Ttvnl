@@ -77,40 +77,11 @@
         .btn-next:hover, .btn-prev:hover, .btn-toggle:hover, .btn-remember:hover {
             background-color: #0284c7;
         }
-        .flashcard-wrapper {
-            perspective: 1000px;
-            width: 300px;
-            height: 180px;
-            margin: auto;
-        }
-        .flashcard-inner {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            cursor: pointer;
-        }
-        .flashcard-wrapper.flipped .flashcard-inner {
-            transform: rotateY(180deg);
-        }
-        .flashcard-front, .flashcard-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            background-color: #fcd34d;
-            border: 2px solid #333;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: bold;
-        }
-        .flashcard-back {
-            transform: rotateY(180deg);
-        }
+        .flashcard-wrapper { perspective: 1000px; }
+        .flashcard-inner { position: relative; width: 300px; height: 200px; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+        .flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #ccc; }
+        .flashcard-back { transform: rotateY(180deg); }
+        .flipped { transform: rotateY(180deg); }
     </style>
 </head>
 <body>
@@ -118,23 +89,21 @@
         <header>
             <div class="header-content">
                 <div class="logo">
-                    <h1 th:text="${title}">日本語学習</h1>
-                    <div class="japanese-flag"></div>
+                    <h1 th:text="${title}">📘 Cấp độ N5</h1>
                 </div>
                 <nav class="nav-menu">
-                    <a href="javascript:void(0)" class="nav-btn" onclick="showSection('vocab')">📝 Từ vựng</a>
-                    <a href="javascript:void(0)" class="nav-btn" onclick="showSection('kanji')">🔤 Kanji</a>
-                    <a href="javascript:void(0)" class="nav-btn" onclick="showSection('grammar')">📘 Ngữ pháp</a>
-                    <a href="javascript:void(0)" class="nav-btn" onclick="showSection('exercise')">📝 Bài tập</a>
-                    <a href="javascript:void(0)" class="nav-btn active" onclick="showSection('flashcard')">🃏 Flashcard</a>
-                    <a th:href="@{'/listening/n5'}" class="nav-btn">🎧 Nghe-hiểu</a>
+                    <a th:href="@{'/level/n5'}" class="nav-btn">📝 Từ vựng</a>
+                    <a th:href="@{'/level/n5'}" class="nav-btn">🔤 Kanji</a>
+                    <a th:href="@{'/level/n5'}" class="nav-btn">📘 Ngữ pháp</a>
+                    <a th:href="@{'/level/n5'}" class="nav-btn">📝 Bài tập</a>
+                    <a th:href="@{'/level/n5'}" class="nav-btn active">🃏 Flashcard</a>
                 </nav>
             </div>
         </header>
 
         <div class="main-content">
             <div class="card" style="max-width: 700px; margin: auto;">
-                <h2 style="text-align: center; cursor: pointer;" onclick="showSection('vocab')">📘 Cấp độ N5</h2>
+                <h2 style="text-align: center; cursor: pointer;" th:onclick="'window.location.href=\'/level/n5\''">📘 Cấp độ N5</h2>
                 <div class="study-buttons">
                     <button class="btn-vocab" onclick="showSection('vocab')">📝 Từ vựng</button>
                     <button class="btn-kanji" onclick="showSection('kanji')">🔤 Kanji</button>
@@ -143,16 +112,11 @@
                     <button class="btn-flashcard" onclick="showSection('flashcard')">🃏 Flashcard</button>
                 </div>
 
-                <!-- Từ vựng -->
                 <div id="vocab-section" class="card" style="display: none;">
                     <h3>📝 Từ vựng</h3>
                     <table border="1" cellspacing="0" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: center;">
                         <thead style="background-color: #f3f4f6;">
-                            <tr>
-                                <th>STT</th>
-                                <th>Từ vựng</th>
-                                <th>Nghĩa</th>
-                            </tr>
+                            <tr><th>STT</th><th>Từ vựng</th><th>Nghĩa</th></tr>
                         </thead>
                         <tbody>
                             <tr th:each="item, iter : ${vocabularyList}">
@@ -167,26 +131,18 @@
                     </table>
                 </div>
 
-                <!-- Kanji -->
                 <div id="kanji-section" class="card" style="display: none;">
                     <h3>🔤 Kanji</h3>
                     <table border="1" cellspacing="0" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: center;">
                         <thead style="background-color: #f3f4f6;">
-                            <tr>
-                                <th>STT</th>
-                                <th>Kanji</th>
-                                <th>Âm Kun</th>
-                                <th>Âm Ôn</th>
-                                <th>Nghĩa</th>
-                                <th>Từ vựng liên quan</th>
-                            </tr>
+                            <tr><th>STT</th><th>Kanji</th><th>Âm Kun</th><th>Âm Ôn</th><th>Nghĩa</th><th>Từ vựng liên quan</th></tr>
                         </thead>
                         <tbody>
                             <tr th:each="item, iter : ${kanaList}">
                                 <td th:text="${iter.count}"></td>
                                 <td th:text="${item.kana}"></td>
-                                <td th:text="${item.kun ?: ''}"></td>
-                                <td th:text="${item.on ?: ''}"></td>
+                                <td th:text="${item.kun}"></td>
+                                <td th:text="${item.on}"></td>
                                 <td th:text="${item.meaning}"></td>
                                 <td th:text="${item.vocab}"></td>
                             </tr>
@@ -197,17 +153,11 @@
                     </table>
                 </div>
 
-                <!-- Ngữ pháp -->
                 <div id="grammar-section" class="card" style="display: none;">
                     <h3>📘 Ngữ pháp</h3>
                     <table border="1" cellspacing="0" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: center;">
                         <thead style="background-color: #f3f4f6;">
-                            <tr>
-                                <th>STT</th>
-                                <th>Ngữ pháp</th>
-                                <th>Nghĩa</th>
-                                <th>Ví dụ</th>
-                            </tr>
+                            <tr><th>STT</th><th>Ngữ pháp</th><th>Nghĩa</th><th>Ví dụ</th></tr>
                         </thead>
                         <tbody>
                             <tr th:each="item, iter : ${grammarList}">
@@ -223,13 +173,20 @@
                     </table>
                 </div>
 
-                <!-- Bài tập -->
                 <div id="exercise-section" class="card" style="display: none;">
                     <h3>📝 Bài tập</h3>
-                    <div id="quiz-container"></div>
+                    <div th:each="item, iter : ${exerciseList}">
+                        <p th:text="'Câu ' + ${iter.count} + ': ' + ${item.question}"></p>
+                        <ul>
+                            <li th:each="opt : ${item.options}" th:text="${opt}"></li>
+                        </ul>
+                        <p th:text="'Đáp án đúng: ' + ${item.correct}"></p>
+                    </div>
+                    <div th:if="${#lists.isEmpty(exerciseList)}">
+                        <p>Chưa có bài tập cho cấp độ này.</p>
+                    </div>
                 </div>
 
-                <!-- Flashcard -->
                 <div id="flashcard-section" class="card">
                     <h3>🃏 Flashcard</h3>
                     <div id="flashcard-container" style="text-align: center; margin-top: 40px;">
@@ -252,120 +209,5 @@
     </div>
 
     <script th:src="@{/script.js}"></script>
-    <script th:inline="javascript">
-        const content = {
-                    vocab: [
-            /*[[
-                ${#lists.isEmpty(vocabularyList) ? '' : ''}
-            ]]*/
-            <th:block th:each="item, iter : ${vocabularyList}">
-                { word: '[[${item.japanese}]]', meaning: '[[${item.meaning}]]' }<th:block th:if="${!iter.last}">,</th:block>
-            </th:block>
-        ],
-        kanji: [
-            <th:block th:each="item, iter : ${kanaList}">
-                { char: '[[${item.kana}]]', kun: '[[${item.kun ?: ""}]]', on: '[[${item.on ?: ""}]]', meaning: '[[${item.meaning}]]', vocab: '[[${item.vocab}]]' }<th:block th:if="${!iter.last}">,</th:block>
-            </th:block>
-        ],
-        grammar: [
-            <th:block th:each="item, iter : ${grammarList}">
-                { form: '[[${item.form}]]', meaning: '[[${item.meaning}]]', example: '[[${item.example}]]' }<th:block th:if="${!iter.last}">,</th:block>
-            </th:block>
-        ],
-        quizList: [
-            <th:block th:each="item, iter : ${exerciseList}">
-                { question: '[[${item.question}]]', options: [[${item.options}]], correct: '[[${item.correct}]]' }<th:block th:if="${!iter.last}">,</th:block>
-            </th:block>
-        ]
-        };
-
-        function showSection(type) {
-            document.querySelectorAll('.card[id$="-section"]').forEach(section => section.style.display = 'none');
-            document.getElementById(`${type}-section`).style.display = 'block';
-            document.querySelectorAll('.study-buttons button').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`.btn-${type}`).classList.add('active');
-            if (type === 'exercise') {
-                currentQuestion = 0;
-                score = 0;
-                renderQuestion(document.getElementById('quiz-container'));
-            }
-        }
-
-        let currentQuestion = 0;
-        let score = 0;
-
-        function renderQuestion(area) {
-            const q = content.quizList[currentQuestion];
-            const optionHtml = q.options.map(opt => `
-                <div class="quiz-option" onclick="checkExerciseAnswer(this, '${q.correct}')">${opt}</div>
-            `).join('');
-            area.innerHTML = `
-                <div class="quiz-question">
-                    <h3>📝 Bài tập (Câu ${currentQuestion + 1} / ${content.quizList.length})</h3>
-                    <p><strong>Câu hỏi:</strong> ${q.question}</p>
-                    ${optionHtml}
-                </div>
-            `;
-        }
-
-        function checkExerciseAnswer(el, correct) {
-            const options = document.querySelectorAll('.quiz-option');
-            options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.textContent === correct) {
-                    opt.classList.add('correct');
-                } else if (opt === el) {
-                    opt.classList.add('wrong');
-                }
-            });
-            if (el.textContent === correct) score++;
-            setTimeout(nextQuestion, 1000);
-        }
-
-        function nextQuestion() {
-            const area = document.getElementById('quiz-container');
-            currentQuestion++;
-            if (currentQuestion < content.quizList.length) {
-                renderQuestion(area);
-            } else {
-                area.innerHTML = `
-                    <div class="quiz-result">
-                        <h3>✅ Kết quả</h3>
-                        <p>Bạn đã trả lời đúng <strong>${score}</strong> / ${content.quizList.length} câu.</p>
-                        <button onclick="showSection('exercise')">🔁 Làm lại</button>
-                    </div>
-                `;
-            }
-        }
-
-        let currentCard = 0;
-        function updateFlashcardFromVocab() {
-            const card = content.vocab[currentCard];
-            document.getElementById("flashcard-front").textContent = card.word;
-            document.getElementById("flashcard-back").textContent = card.meaning;
-            document.querySelector(".flashcard-wrapper").classList.remove("flipped");
-        }
-
-        function toggleFlashcard() {
-            document.querySelector(".flashcard-wrapper").classList.toggle("flipped");
-        }
-
-        function nextFlashcard() {
-            currentCard = (currentCard + 1) % content.vocab.length;
-            updateFlashcardFromVocab();
-        }
-
-        function prevFlashcard() {
-            currentCard = (currentCard - 1 + content.vocab.length) % content.vocab.length;
-            updateFlashcardFromVocab();
-        }
-
-        function markRemembered() {
-            alert("✅ Bạn đã đánh dấu từ này là 'đã nhớ'!");
-        }
-
-        // Khởi tạo flashcard
-        updateFlashcardFromVocab();
-    </script>
 </body>
 </html>
