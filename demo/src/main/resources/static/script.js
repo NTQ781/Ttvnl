@@ -52,30 +52,34 @@ const hiraganaOrder = [
     ['わ','を','ん']
 ];
 
-// Gộp logic tab-switching, flashcard, và auth vào một khối DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM loaded");
 
-    // Fallback hiển thị container và auth-container
     const container = document.querySelector('.container');
     const authContainer = document.querySelector('#auth-container');
-    if (container) container.style.display = 'block';
-    if (authContainer) authContainer.style.display = 'block';
 
-    // Kiểm tra cả .nav-btn (menu) và .level-btn (cấp độ)
+    // Chỉ hiện auth hoặc container khi cần
+    if (authContainer && !document.getElementById('current-user').textContent) {
+        authContainer.style.display = 'block';
+    } else if (container) {
+        container.style.display = 'block';
+    }
+
+    // Điều hướng nav-btn và level-btn
     const navButtons = document.querySelectorAll('.nav-btn, .level-btn');
-if (!navButtons || navButtons.length === 0) {
-    console.warn("Study buttons not found. Check .nav-btn or .level-btn in HTML.");
-    } else {
+    if (navButtons.length > 0) {
         navButtons.forEach(button => {
             button.addEventListener('click', (e) => {
-                e.preventDefault(); // Ngăn điều hướng mặc định nếu là <a>
-                let section = button.textContent.toLowerCase().replace(' ', '-').replace('đọc-hiểu', 'reading').replace('nghe-hiểu', 'listening');
-                // Nếu là nút cấp độ (N1-N5), chuyển hướng đến /level/{level}
-                if (button.classList.contains('level-btn')) {
-                    const level = section.replace('n', ''); // Lấy N1, N2, v.v.
-                    window.location.href = `/level/${level}`;
-                } else {
+                const level = button.dataset.level;
+                const section = button.dataset.section;
+
+                if (level) {
+                    // Để anchor điều hướng tự nhiên nếu có
+                    if (!button.closest('a')) {
+                        window.location.href = `/level/${level}`;
+                    }
+                } else if (section) {
+                    e.preventDefault();
                     showSection(section, button);
                 }
             });
@@ -83,40 +87,22 @@ if (!navButtons || navButtons.length === 0) {
     }
 
     // Flashcard logic
-    const flashcards = window.vocabData || vocabularyData; // Fallback to static data
+    const flashcards = (window.vocabData || window.vocabularyData || []);
     let currentCardIndex = 0;
     let isFlipped = false;
 
-    function switchTab(event) {
-        const section = event.target.dataset.section;
-        if (!section) return;
-
-        console.log("Switching to section:", section);
-        const contents = document.querySelectorAll('.vocab-content, .kanji-content, .grammar-content, .exercise-content, .flashcard-content');
-        contents.forEach(el => el.style.display = 'none');
-
-        const target = document.querySelector(`.${section}-content`);
-        if (target) {
-            target.style.display = 'block';
-        }
-
-        if (section === 'flashcard') {
-            displayFlashcards();
-        }
-    }
-
     function displayFlashcards() {
         const flashcardContainer = document.querySelector('.flashcard-content');
-        if (!flashcardContainer || !flashcards.length) {
+        if (!flashcardContainer) return;
+        if (!flashcards.length) {
             flashcardContainer.innerHTML = '<p>Chưa có flashcard.</p>';
             return;
         }
-
         const card = flashcards[currentCardIndex];
         flashcardContainer.innerHTML = `
             <div class="flashcard-item ${isFlipped ? 'flipped' : ''}">
-                <div class="flashcard-front">${card.japanese}</div>
-                <div class="flashcard-back">${card.reading} - ${card.meaning}</div>
+                <div class="flashcard-front">${card.japanese || ''}</div>
+                <div class="flashcard-back">${card.reading || ''} - ${card.meaning || ''}</div>
             </div>
             <div class="flashcard-controls">
                 <button onclick="prevCard()">⬅ Quay lại</button>
@@ -131,7 +117,6 @@ if (!navButtons || navButtons.length === 0) {
         isFlipped = !isFlipped;
         displayFlashcards();
     };
-
     window.nextCard = function() {
         if (currentCardIndex < flashcards.length - 1) {
             currentCardIndex++;
@@ -139,7 +124,6 @@ if (!navButtons || navButtons.length === 0) {
             displayFlashcards();
         }
     };
-
     window.prevCard = function() {
         if (currentCardIndex > 0) {
             currentCardIndex--;
@@ -147,7 +131,6 @@ if (!navButtons || navButtons.length === 0) {
             displayFlashcards();
         }
     };
-
     window.markAsKnown = function() {
         flashcards.splice(currentCardIndex, 1);
         if (currentCardIndex >= flashcards.length) {
@@ -156,23 +139,20 @@ if (!navButtons || navButtons.length === 0) {
         displayFlashcards();
     };
 
-    // Định nghĩa các hàm auth
+    // Auth
     window.login = function() {
-        console.log("Login clicked");
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         if (username && password) {
             document.getElementById('auth-message').textContent = "Đăng nhập thành công!";
-            document.getElementById('auth-container').style.display = 'none';
+            authContainer.style.display = 'none';
             document.getElementById('user-info').style.display = 'block';
             document.getElementById('current-user').textContent = username;
         } else {
             document.getElementById('auth-message').textContent = "Vui lòng nhập tài khoản và mật khẩu!";
         }
     };
-
     window.register = function() {
-        console.log("Register clicked");
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         if (username && password) {
@@ -181,14 +161,10 @@ if (!navButtons || navButtons.length === 0) {
             document.getElementById('auth-message').textContent = "Vui lòng nhập tài khoản và mật khẩu!";
         }
     };
-
     window.showResetPassword = function() {
-        console.log("Reset password clicked");
         document.getElementById('reset-password-section').style.display = 'block';
     };
-
     window.resetPassword = function() {
-        console.log("Reset password confirmed");
         const newPassword = document.getElementById('new-password').value;
         if (newPassword) {
             document.getElementById('auth-message').textContent = "Mật khẩu đã được đặt lại!";
@@ -197,52 +173,56 @@ if (!navButtons || navButtons.length === 0) {
             document.getElementById('auth-message').textContent = "Vui lòng nhập mật khẩu mới!";
         }
     };
-
     window.logout = function() {
-        console.log("Logout clicked");
         document.getElementById('user-info').style.display = 'none';
-        document.getElementById('auth-container').style.display = 'block';
+        authContainer.style.display = 'block';
         document.getElementById('current-user').textContent = '';
         document.getElementById('username').value = '';
         document.getElementById('password').value = '';
         document.getElementById('auth-message').textContent = '';
     };
 
+    // showSection
     window.showSection = function(section, button) {
-        console.log("Showing section:", section);
         const sections = document.querySelectorAll('.card');
         sections.forEach(s => s.style.display = 'none');
         const targetSection = document.getElementById(`${section}-section`) || document.getElementById(section);
         if (targetSection) targetSection.style.display = 'block';
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
+        if (button) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        }
     };
 
-    window.nextQuestion = function() {
-        console.log("Next question clicked");
-        // Logic cho câu hỏi tiếp theo (cần triển khai thêm)
-    };
-
-    // Gắn sự kiện cho tab-switching (flashcard) nếu có .study-buttons
+    // study-buttons tab switch
     const studyButtons = document.querySelectorAll('.study-buttons button');
-    if (studyButtons && studyButtons.length > 0) {
+    if (studyButtons.length > 0) {
         studyButtons.forEach(btn => {
-            btn.addEventListener('click', switchTab);
+            btn.addEventListener('click', (event) => {
+                const section = event.target.dataset.section;
+                if (!section) return;
+                document.querySelectorAll('.vocab-content, .kanji-content, .grammar-content, .exercise-content, .flashcard-content')
+                    .forEach(el => el.style.display = 'none');
+                const target = document.querySelector(`.${section}-content`);
+                if (target) target.style.display = 'block';
+                if (section === 'flashcard') displayFlashcards();
+            });
         });
         const vocabBtn = document.querySelector('.study-buttons button[data-section="vocabulary"]');
-        if (vocabBtn) {
-            vocabBtn.click();
-        }
+        if (vocabBtn) vocabBtn.click();
     }
 
-    // Hiển thị bài nghe nếu có
-    displayListening();
+    // Listening
+    if (typeof window.listeningData !== 'undefined' && document.querySelector('.listening-content')) {
+        displayListening();
+    }
 });
 
-// Giữ nguyên hàm displayListening
+// Safe displayListening
 function displayListening() {
     const listeningContainer = document.querySelector('.listening-content');
-    listeningContainer.innerHTML = listeningData.map((item, index) => `
+    if (!listeningContainer || !window.listeningData) return;
+    listeningContainer.innerHTML = window.listeningData.map((item, index) => `
         <div class="listening-tab-item">
             <h4>${item.title}</h4>
             <p>${item.description}</p>
@@ -260,7 +240,7 @@ function displayListening() {
                 ${item.script || "<i>Chưa có nội dung bài nghe</i>"}
             </div>
             <div class="fill-question" id="fill-question-${index}" style="display: none;">
-                ${item.questions.map((q, i) => `
+                ${item.questions.map((q) => `
                     <div style="margin-bottom: 10px;">
                         <label>${q.question}</label><br/>
                         <input type="text" placeholder="${q.placeholder}" style="width: 100%; padding: 8px; margin-top: 4px;" />
@@ -272,17 +252,14 @@ function displayListening() {
 
     document.querySelectorAll('.fill-toggle').forEach(el => {
         el.addEventListener('click', () => {
-            const index = el.getAttribute('data-index');
-            const target = document.getElementById(`fill-question-${index}`);
-            target.style.display = (target.style.display === 'none') ? 'block' : 'none';
+            const target = document.getElementById(`fill-question-${el.dataset.index}`);
+            if (target) target.style.display = (target.style.display === 'none') ? 'block' : 'none';
         });
     });
-
     document.querySelectorAll('.script-toggle').forEach(el => {
         el.addEventListener('click', () => {
-            const index = el.getAttribute('data-index');
-            const target = document.getElementById(`script-text-${index}`);
-            target.style.display = (target.style.display === 'none') ? 'block' : 'none';
+            const target = document.getElementById(`script-text-${el.dataset.index}`);
+            if (target) target.style.display = (target.style.display === 'none') ? 'block' : 'none';
         });
     });
 }
