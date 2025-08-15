@@ -3,6 +3,7 @@ package com.example.japanese.controller;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.http.MediaType;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer; // Thêm import này
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
