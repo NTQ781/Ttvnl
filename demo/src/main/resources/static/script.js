@@ -64,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Kiểm tra cả .nav-btn (menu) và .level-btn (cấp độ)
     const navButtons = document.querySelectorAll('.nav-btn, .level-btn');
-    if (!navButtons || navButtons.length === 0) {
-        console.error("Study buttons not found. Check .nav-btn or .level-btn in HTML.");
+if (!navButtons || navButtons.length === 0) {
+    console.warn("Study buttons not found. Check .nav-btn or .level-btn in HTML.");
     } else {
         navButtons.forEach(button => {
             button.addEventListener('click', (e) => {
