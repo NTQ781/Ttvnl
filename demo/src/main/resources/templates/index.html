@@ -3,198 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nihongo Gakushyu- Học Tiếng Nhật</title>
+    <title>Nihongo Gakushyu - Đăng nhập</title>
     <link rel="stylesheet" th:href="@{/styles.css}" href="/styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <!-- Định nghĩa favicon để tránh lỗi 404 mặc định -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" onerror="this.remove(); console.warn('Favicon not found, ignored.');">
 </head>
 <body>
-    <!-- Đăng nhập/Đăng ký -->
-    <!-- Giao diện Đăng nhập / Đăng ký với glassmorphism -->
-    <div id="auth-container" style="
-      max-width:400px;
-      margin:40px auto;
-      padding: 30px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      display: block; /* Fallback hiển thị nếu JS không chạy */
-    ">
-      <h2 style="text-align:center;margin-bottom:20px;color:#1e293b;">日本語学習</h2>
+    <div id="auth-container" class="auth-card">
+        <h2 style="text-align:center;margin-bottom:20px;color:#1e293b;">日本語学習</h2>
 
-      <input id="username" type="text" placeholder="Tài khoản" style="width:100%;padding:12px;margin-bottom:12px;border:1px solid #cbd5e0;border-radius:10px;background:rgba(255,255,255,0.8);">
-      <input id="password" type="password" placeholder="Mật khẩu" style="width:100%;padding:12px;margin-bottom:20px;border:1px solid #cbd5e0;border-radius:10px;background:rgba(255,255,255,0.8);">
+        <input id="username" type="text" placeholder="Tài khoản">
+        <input id="password" type="password" placeholder="Mật khẩu">
 
-      <div style="display: flex; justify-content: space-between; gap: 12px;">
-        <button onclick="login()" class="nav-btn" style="flex:1;">Đăng nhập</button>
-        <button onclick="register()" class="nav-btn" style="flex:1;">Đăng ký</button>
-      </div>
-
-      <div style="text-align: center; margin-top: 15px;">
-        <a href="#" onclick="showResetPassword()" style="font-size:0.95rem;color:#2563eb;text-decoration:underline;">
-          🔑 Quên mật khẩu?
-        </a>
-      </div>
-
-      <!-- Phần nhập mật khẩu mới -->
-      <div id="reset-password-section" style="display:none;margin-top:20px;">
-        <input id="new-password" type="password" placeholder="Nhập mật khẩu mới" style="width:100%;padding:12px;margin-bottom:10px;border:1px solid #cbd5e0;border-radius:10px;background:rgba(255,255,255,0.8);">
-        <button onclick="resetPassword()" class="nav-btn" style="width:100%;">Xác nhận đặt lại mật khẩu</button>
-      </div>
-
-      <div id="auth-message" style="color:red;text-align:center;margin-top:12px;font-weight:500;"></div>
-    </div>
-
-    <!-- Giao diện chính -->
-    <div class="container" style="
-      display: block; /* Fallback hiển thị nếu JS không chạy */
-    ">
-        <!-- Chào mừng -->
-        <div id="user-info" style="text-align:right; font-weight:bold; padding:5px 10px;">
-            <span style="font-size: 18px; vertical-align: middle; margin-right: 6px;">🧙</span>
-            Xin chào, <span id="current-user"></span>!
-            <button onclick="logout()" style="
-                margin-left: 10px;
-                padding: 5px 10px;
-                background-color: #2563eb;
-                color: white;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 0.9rem;
-                font-weight: 500;
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                transition: background-color 0.2s ease;
-            ">
-                🚪 Đăng xuất
-            </button>
+        <div style="display: flex; justify-content: space-between; gap: 12px;">
+            <button onclick="login()" class="nav-btn" style="flex:1;">Đăng nhập</button>
+            <button onclick="register()" class="nav-btn" style="flex:1;">Đăng ký</button>
         </div>
 
-        <div class="container">
-            <!-- Header -->
-            <header>
-                <div class="header-content">
-                    <div class="logo">
-                        <div class="japanese-flag"></div>
-                        <h1 onclick="location.reload()">日本語学習</h1>
-                    </div>
-                    <div class="nav-menu">
-                        <button class="nav-btn" onclick="showSection('hiragana', this)">Hiragana</button>
-                        <button class="nav-btn" onclick="showSection('katakana', this)">Katakana</button>
-                        <button class="nav-btn" onclick="showSection('reading', this)">Đọc-hiểu</button>
-                        <button class="nav-btn" onclick="showSection('listening', this)">Nghe-hiểu</button>
-                    </div>
-                    
-                    <!-- Chọn cấp độ học -->
-                    <div style="display: flex; justify-content: flex-end;">
-                        <div class="card" id="level-section" style="width: 550px;">
-                            <h2 style="text-align: center;">Chọn cấp độ học</h2>
-                            <a th:href="@{/level/n5}">
-                                <button class="level-btn">🔵 N5</button>
-                            </a>
-                            <a th:href="@{/level/n4}">
-                                <button class="level-btn">🟢 N4</button>
-                            </a>
-                            <a th:href="@{/level/n3}">
-                                <button class="level-btn">🟡 N3</button>
-                            </a>
-                            <a th:href="@{/level/n2}">
-                                <button class="level-btn">🟠 N2</button>
-                            </a>
-                            <a th:href="@{/level/n1}">
-                                <button class="level-btn">🔴 N1</button>
-                            </a>
-                            <div id="study-display" style="margin-top: 20px;"></div>
-                        </div>
-                    </div>
-            <style>
-                .level-btn {
-                    padding: 10px 20px;
-                    font-size: 1.1rem;
-                    font-weight: bold;
-                    border: none;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    transition: background-color 0.3s ease, transform 0.2s ease;
-                }
-                .level-btn:hover {
-                    transform: translateY(-2px);
-                    filter: brightness(1.1);
-                }
-                .fade-in {
-                    animation: fadeIn 0.4s ease-in-out;
-                }
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-            </style>
-
-            <!-- Main Content -->
-            <div class="main-content" style="margin-top: -185px;">
-                <!-- Alphabet Section -->
-                <div class="card" id="alphabet-section" data-default="true">
-                    <h2 id="alphabet-title">Chào mừng đến với 日本語学習 <i class="fas fa-heart" style="color: red;"></i>
-                    </h2>
-                    <div class="alphabet-grid" id="alphabet-grid">
-                        <!-- JS sẽ render bảng sau khi bấm nút -->
-                    </div>
-                    <div class="pronunciation" id="pronunciation" style="display: flex; align-items: center; height: 200px;">
-                        <h3>Bạn đang ở trình độ nào ?</h3>
-                        <p>N5-Sơ cấp 1 
-                            <span aria-label="Hoa anh đào">🌸</span>
-                        </p>
-                        <p>N4-Sơ cấp 2 
-                            <span aria-label="Hoa anh đào">🌸</span>
-                        </p>
-                        <p>N3-Trung cấp 1
-                            <span aria-label="Hoa anh đào">🌸</span>
-                        </p>
-                        <p>N2-Trung cao cấp
-                            <span aria-label="Hoa anh đào">🌸</span>
-                        </p>
-                        <p>N1-Cao cấp
-                            <span aria-label="Hoa anh đào">🌸</span>
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- Vocabulary Section -->
-                <div class="card" id="vocab-section" style="display: none;">
-                    <h2>Từ vựng cơ bản</h2>
-                    <div id="vocab-list">
-                        <!-- Vocabulary items will be generated by JavaScript -->
-                    </div>
-                </div>
-                <div class="card" id="reading-section" style="display: none;">
-                    <h2>📖 Bài tập Đọc hiểu</h2>
-                    <div id="reading-list"></div>
-                </div>
-                <div class="card" id="listening-section" style="display: none;">
-                    <h2>🎧 Bài tập Nghe hiểu</h2>
-                    <div id="listening-list">
-                        <!-- Danh sách bài nghe sẽ được render bằng JS -->
-                    </div>
-                </div>
-
-                <div class="quiz-section" id="quiz-section" style="display: none;">
-                    <div class="quiz-options" id="quiz-options">
-                    </div>
-                    <div class="quiz-result" id="quiz-result" style="display: none;"></div>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button class="nav-btn" onclick="nextQuestion()"></button>
-                    </div>
-                </div>
-            </div>
+        <div style="text-align: center; margin-top: 15px;">
+            <a href="#" onclick="showResetPassword()" style="font-size:0.95rem;color:#2563eb;text-decoration:underline;">
+                🔑 Quên mật khẩu?
+            </a>
         </div>
 
-        <script th:src="@{/script.js}" src="/script.js" onerror="this.remove(); console.error('Failed to load script.js');"></script>
+        <div id="reset-password-section" style="display:none;margin-top:20px;">
+            <input id="new-password" type="password" placeholder="Nhập mật khẩu mới">
+            <button onclick="resetPassword()" class="nav-btn" style="width:100%;">Xác nhận đặt lại mật khẩu</button>
+        </div>
+
+        <div id="auth-message" style="color:red;text-align:center;margin-top:12px;font-weight:500;"></div>
     </div>
+
+    <script th:src="@{/script.js}" src="/script.js"></script>
 </body>
 </html>
