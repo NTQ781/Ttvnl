@@ -90,30 +90,29 @@
                         <button class="nav-btn" onclick="showSection('reading', this)">Đọc-hiểu</button>
                         <button class="nav-btn" onclick="showSection('listening', this)">Nghe-hiểu</button>
                     </div>
-                </div>
-            </header>
-            <!-- Phần học N5/N4 -->
-            <div style="display: flex; justify-content: flex-end;">
-                <div class="card" id="level-section" style="width: 550px;">
-                    <h2 style="text-align: center;">Chọn cấp độ học</h2>
-                    <a th:href="@{/level/n5}">
-                        <button class="level-btn">🔵 N5</button>
-                    </a>
-                    <a th:href="@{/level/n4}">
-                        <button class="level-btn">🟢 N4</button>
-                    </a>
-                    <a th:href="@{/level/n3}">
-                        <button class="level-btn">🟡 N3</button>
-                    </a>
-                    <a th:href="@{/level/n2}">
-                        <button class="level-btn">🟠 N2</button>
-                    </a>
-                    <a th:href="@{/level/n1}">
-                        <button class="level-btn">🔴 N1</button>
-                    </a>
-                    <div id="study-display" style="margin-top: 20px;"></div>
-                </div>
-            </div>
+                    
+                    <!-- Chọn cấp độ học -->
+                    <div style="display: flex; justify-content: flex-end;">
+                        <div class="card" id="level-section" style="width: 550px;">
+                            <h2 style="text-align: center;">Chọn cấp độ học</h2>
+                            <a th:href="@{/level/n5}">
+                                <button class="level-btn">🔵 N5</button>
+                            </a>
+                            <a th:href="@{/level/n4}">
+                                <button class="level-btn">🟢 N4</button>
+                            </a>
+                            <a th:href="@{/level/n3}">
+                                <button class="level-btn">🟡 N3</button>
+                            </a>
+                            <a th:href="@{/level/n2}">
+                                <button class="level-btn">🟠 N2</button>
+                            </a>
+                            <a th:href="@{/level/n1}">
+                                <button class="level-btn">🔴 N1</button>
+                            </a>
+                            <div id="study-display" style="margin-top: 20px;"></div>
+                        </div>
+                    </div>
             <style>
                 .level-btn {
                     padding: 10px 20px;
