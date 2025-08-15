@@ -1016,7 +1016,13 @@ public class HomeController {
         new Exercise("どようびは　なにを　___か？", Arrays.asList("します", "いきます", "のみます"), "します", "N5"),
         new Exercise("すみません、えきは　どこ___　ありますか？", Arrays.asList("に", "で", "を"), "に", "N5")
     );
-
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void configureContentTypeResolver(ContentTypeResolver resolver) {
+        resolver.setDefaultMimeType("application/javascript");
+    }
+}
   @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("title", "日本語学習");
