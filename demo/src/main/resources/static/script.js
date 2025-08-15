@@ -1,3 +1,4 @@
+// Data for Hiragana characters
 const hiraganaData = {
     'あ': 'a', 'い': 'i', 'う': 'u', 'え': 'e', 'お': 'o',
     'か': 'ka', 'き': 'ki', 'く': 'ku', 'け': 'ke', 'こ': 'ko',
@@ -11,6 +12,7 @@ const hiraganaData = {
     'わ': 'wa', 'を': 'wo', 'ん': 'n'
 };
 
+// Data for Katakana characters
 const katakanaData = {
     'ア': 'a', 'イ': 'i', 'ウ': 'u', 'エ': 'e', 'オ': 'o',
     'カ': 'ka', 'キ': 'ki', 'ク': 'ku', 'ケ': 'ke', 'コ': 'ko',
@@ -50,16 +52,37 @@ const hiraganaOrder = [
     ['わ','を','ん']
 ];
 
-// Thêm logic tab-switching và flashcard với kiểm tra DOM
+// Gộp logic tab-switching, flashcard, và auth vào một khối DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM loaded");
-    const studyButtons = document.querySelector('.study-buttons');
-    if (!studyButtons) {
-        console.error("Study buttons not found");
-        return;
+
+    // Fallback hiển thị container và auth-container
+    const container = document.querySelector('.container');
+    const authContainer = document.querySelector('#auth-container');
+    if (container) container.style.display = 'block';
+    if (authContainer) authContainer.style.display = 'block';
+
+    // Sử dụng .nav-btn cho menu điều hướng (Hiragana, Katakana, v.v.)
+    const navButtons = document.querySelectorAll('.nav-btn');
+    if (!navButtons || navButtons.length === 0) {
+        console.error("Nav buttons not found. Check .nav-btn in HTML.");
+    } else {
+        navButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault(); // Ngăn điều hướng mặc định nếu là <a>
+                let section = button.textContent.toLowerCase().replace(' ', '-').replace('đọc-hiểu', 'reading').replace('nghe-hiểu', 'listening');
+                if (button.classList.contains('level-btn')) {
+                    const level = section.replace('n', ''); // Lấy N1, N2, v.v.
+                    window.location.href = `/level/${level}`;
+                } else {
+                    showSection(section, button);
+                }
+            });
+        });
     }
 
-    const flashcards = window.vocabData || vocabularyData; // Fallback to static data if Thymeleaf fails
+    // Flashcard logic
+    const flashcards = window.vocabData || vocabularyData; // Fallback to static data
     let currentCardIndex = 0;
     let isFlipped = false;
 
@@ -132,95 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayFlashcards();
     };
 
-    document.querySelectorAll('.study-buttons button').forEach(btn => {
-        btn.addEventListener('click', switchTab);
-    });
-
-    // Mặc định hiển thị mục Từ vựng
-    const vocabBtn = document.querySelector('.study-buttons button[data-section="vocabulary"]');
-    if (vocabBtn) {
-        vocabBtn.click();
-    }
-});
-
-// Giữ nguyên các phần còn lại
-function displayListening() {
-    const listeningContainer = document.querySelector('.listening-content');
-    listeningContainer.innerHTML = listeningData.map((item, index) => `
-        <div class="listening-tab-item">
-            <h4>${item.title}</h4>
-            <p>${item.description}</p>
-            <audio controls style="width: 100%; margin-bottom: 10px;">
-                <source src="${item.audio}" type="audio/mp3" />
-                Trình duyệt của bạn không hỗ trợ audio.
-            </audio>
-            <div class="fill-toggle" data-index="${index}" style="cursor: pointer; color: #2563eb; font-weight: bold; margin-bottom: 8px;">
-                🔸 Trả lời câu hỏi
-            </div>
-            <div class="script-toggle" data-index="${index}" style="cursor: pointer; color: green; font-weight: bold; margin-bottom: 6px;">
-                📄 Bài nghe
-            </div>
-            <div id="script-text-${index}" style="display: none; white-space: pre-wrap; border-left: 3px solid #ccc; padding-left: 10px; margin-bottom: 12px;">
-                ${item.script || "<i>Chưa có nội dung bài nghe</i>"}
-            </div>
-            <div class="fill-question" id="fill-question-${index}" style="display: none;">
-                ${item.questions.map((q, i) => `
-                    <div style="margin-bottom: 10px;">
-                        <label>${q.question}</label><br/>
-                        <input type="text" placeholder="${q.placeholder}" style="width: 100%; padding: 8px; margin-top: 4px;" />
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `).join('');
-
-    document.querySelectorAll('.fill-toggle').forEach(el => {
-        el.addEventListener('click', () => {
-            const index = el.getAttribute('data-index');
-            const target = document.getElementById(`fill-question-${index}`);
-            target.style.display = (target.style.display === 'none') ? 'block' : 'none';
-        });
-    });
-
-    document.querySelectorAll('.script-toggle').forEach(el => {
-        el.addEventListener('click', () => {
-            const index = el.getAttribute('data-index');
-            const target = document.getElementById(`script-text-${index}`);
-            target.style.display = (target.style.display === 'none') ? 'block' : 'none';
-        });
-    });
-}
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM loaded");
-
-    // Fallback hiển thị container và auth-container
-    const container = document.querySelector('.container');
-    const authContainer = document.querySelector('#auth-container');
-    if (container) container.style.display = 'block';
-    if (authContainer) authContainer.style.display = 'block';
-
-    // Thay .study-buttons bằng .nav-btn (cho menu điều hướng) hoặc .level-btn (cho nút cấp độ)
-    const studyButtons = document.querySelectorAll('.nav-btn'); // Thử với .nav-btn trước
-    // Nếu muốn dùng .level-btn cho N1-N5, thay bằng: const studyButtons = document.querySelectorAll('.level-btn');
-    if (!studyButtons || studyButtons.length === 0) {
-        console.error("Study buttons not found. Check .nav-btn or .level-btn in HTML.");
-    } else {
-        studyButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault(); // Ngăn điều hướng mặc định nếu là <a>
-                let section = button.textContent.toLowerCase().replace(' ', '-').replace('đọc-hiểu', 'reading').replace('nghe-hiểu', 'listening');
-                // Nếu là nút cấp độ (N1-N5), chuyển hướng đến /level/{level}
-                if (button.classList.contains('level-btn')) {
-                    const level = section.replace('n', ''); // Lấy N1, N2, v.v.
-                    window.location.href = `/level/${level}`;
-                } else {
-                    showSection(section, button);
-                }
-            });
-        });
-    }
-
-    // Định nghĩa các hàm
+    // Định nghĩa các hàm auth
     window.login = function() {
         console.log("Login clicked");
         const username = document.getElementById('username').value;
@@ -286,4 +221,67 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Next question clicked");
         // Logic cho câu hỏi tiếp theo (cần triển khai thêm)
     };
+
+    // Gắn sự kiện cho tab-switching (flashcard)
+    const studyButtons = document.querySelectorAll('.study-buttons button');
+    if (studyButtons && studyButtons.length > 0) {
+        studyButtons.forEach(btn => {
+            btn.addEventListener('click', switchTab);
+        });
+        const vocabBtn = document.querySelector('.study-buttons button[data-section="vocabulary"]');
+        if (vocabBtn) {
+            vocabBtn.click();
+        }
+    }
+
+    // Hiển thị bài nghe nếu có
+    displayListening();
 });
+
+// Giữ nguyên hàm displayListening
+function displayListening() {
+    const listeningContainer = document.querySelector('.listening-content');
+    listeningContainer.innerHTML = listeningData.map((item, index) => `
+        <div class="listening-tab-item">
+            <h4>${item.title}</h4>
+            <p>${item.description}</p>
+            <audio controls style="width: 100%; margin-bottom: 10px;">
+                <source src="${item.audio}" type="audio/mp3" />
+                Trình duyệt của bạn không hỗ trợ audio.
+            </audio>
+            <div class="fill-toggle" data-index="${index}" style="cursor: pointer; color: #2563eb; font-weight: bold; margin-bottom: 8px;">
+                🔸 Trả lời câu hỏi
+            </div>
+            <div class="script-toggle" data-index="${index}" style="cursor: pointer; color: green; font-weight: bold; margin-bottom: 6px;">
+                📄 Bài nghe
+            </div>
+            <div id="script-text-${index}" style="display: none; white-space: pre-wrap; border-left: 3px solid #ccc; padding-left: 10px; margin-bottom: 12px;">
+                ${item.script || "<i>Chưa có nội dung bài nghe</i>"}
+            </div>
+            <div class="fill-question" id="fill-question-${index}" style="display: none;">
+                ${item.questions.map((q, i) => `
+                    <div style="margin-bottom: 10px;">
+                        <label>${q.question}</label><br/>
+                        <input type="text" placeholder="${q.placeholder}" style="width: 100%; padding: 8px; margin-top: 4px;" />
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+
+    document.querySelectorAll('.fill-toggle').forEach(el => {
+        el.addEventListener('click', () => {
+            const index = el.getAttribute('data-index');
+            const target = document.getElementById(`fill-question-${index}`);
+            target.style.display = (target.style.display === 'none') ? 'block' : 'none';
+        });
+    });
+
+    document.querySelectorAll('.script-toggle').forEach(el => {
+        el.addEventListener('click', () => {
+            const index = el.getAttribute('data-index');
+            const target = document.getElementById(`script-text-${index}`);
+            target.style.display = (target.style.display === 'none') ? 'block' : 'none';
+        });
+    });
+}
