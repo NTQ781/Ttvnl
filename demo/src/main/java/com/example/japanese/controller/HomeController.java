@@ -1018,10 +1018,14 @@ public class HomeController {
     );
 
   @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("title", "日本語学習");
-        return "index"; // Đảm bảo trả về index.html
-    }
+public String indexPage() {
+    return "index";
+}
+
+@GetMapping("/main")
+public String mainPage() {
+    return "main";
+}
 
     @GetMapping("/level/{level}")
     public String levelPage(@PathVariable String level, Model model) {
