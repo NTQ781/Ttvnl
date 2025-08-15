@@ -192,29 +192,90 @@ function displayListening() {
 }
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM loaded");
-    // Hiển thị container hoặc auth-container làm mặc định
+
+    // Fallback hiển thị container và auth-container
     const container = document.querySelector('.container');
     const authContainer = document.querySelector('#auth-container');
-    if (container) container.style.display = 'block'; // Fallback hiển thị giao diện chính
-    if (authContainer) authContainer.style.display = 'block'; // Fallback hiển thị đăng nhập
+    if (container) container.style.display = 'block';
+    if (authContainer) authContainer.style.display = 'block';
 
-    // Đảm bảo các hàm như showSection hoạt động
+    // Thay thế .study-buttons bằng .nav-menu để gắn sự kiện
+    const navButtons = document.querySelectorAll('.nav-menu .nav-btn');
+    if (!navButtons) {
+        console.error("Nav buttons not found");
+    } else {
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const section = button.textContent.toLowerCase().replace(' ', '-');
+                showSection(section, button);
+            });
+        });
+    }
+
+    // Định nghĩa các hàm
+    window.login = function() {
+        console.log("Login clicked");
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        if (username && password) {
+            document.getElementById('auth-message').textContent = "Đăng nhập thành công!";
+            document.getElementById('auth-container').style.display = 'none';
+            document.getElementById('user-info').style.display = 'block';
+            document.getElementById('current-user').textContent = username;
+        } else {
+            document.getElementById('auth-message').textContent = "Vui lòng nhập tài khoản và mật khẩu!";
+        }
+    };
+
+    window.register = function() {
+        console.log("Register clicked");
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        if (username && password) {
+            document.getElementById('auth-message').textContent = "Đăng ký thành công! Vui lòng đăng nhập.";
+        } else {
+            document.getElementById('auth-message').textContent = "Vui lòng nhập tài khoản và mật khẩu!";
+        }
+    };
+
+    window.showResetPassword = function() {
+        console.log("Reset password clicked");
+        document.getElementById('reset-password-section').style.display = 'block';
+    };
+
+    window.resetPassword = function() {
+        console.log("Reset password confirmed");
+        const newPassword = document.getElementById('new-password').value;
+        if (newPassword) {
+            document.getElementById('auth-message').textContent = "Mật khẩu đã được đặt lại!";
+            document.getElementById('reset-password-section').style.display = 'none';
+        } else {
+            document.getElementById('auth-message').textContent = "Vui lòng nhập mật khẩu mới!";
+        }
+    };
+
+    window.logout = function() {
+        console.log("Logout clicked");
+        document.getElementById('user-info').style.display = 'none';
+        document.getElementById('auth-container').style.display = 'block';
+        document.getElementById('current-user').textContent = '';
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('auth-message').textContent = '';
+    };
+
     window.showSection = function(section, button) {
         console.log("Showing section:", section);
         const sections = document.querySelectorAll('.card');
         sections.forEach(s => s.style.display = 'none');
-        const targetSection = document.getElementById(`${section}-section`) || document.getElementById(`${section}`);
+        const targetSection = document.getElementById(`${section}-section`) || document.getElementById(section);
         if (targetSection) targetSection.style.display = 'block';
-        // Highlight button
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
     };
 
-    // Hàm mẫu cho các sự kiện khác
-    window.login = function() { console.log("Login clicked"); };
-    window.register = function() { console.log("Register clicked"); };
-    window.showResetPassword = function() { console.log("Reset password clicked"); };
-    window.resetPassword = function() { console.log("Reset password confirmed"); };
-    window.logout = function() { console.log("Logout clicked"); };
-    window.nextQuestion = function() { console.log("Next question clicked"); };
+    window.nextQuestion = function() {
+        console.log("Next question clicked");
+        // Logic cho câu hỏi tiếp theo (cần triển khai thêm)
+    };
 });
