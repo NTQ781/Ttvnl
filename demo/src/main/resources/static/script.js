@@ -199,14 +199,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (container) container.style.display = 'block';
     if (authContainer) authContainer.style.display = 'block';
 
-    // Thay thế .study-buttons bằng .nav-menu để gắn sự kiện
-    const navButtons = document.querySelectorAll('.nav-menu .nav-btn');
-    if (!navButtons) {
+    // Thay .study-buttons bằng .nav-btn (dành cho menu điều hướng)
+    const navButtons = document.querySelectorAll('.nav-btn');
+    if (!navButtons || navButtons.length === 0) {
         console.error("Nav buttons not found");
     } else {
         navButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const section = button.textContent.toLowerCase().replace(' ', '-');
+            button.addEventListener('click', (e) => {
+                e.preventDefault(); // Ngăn điều hướng mặc định nếu là <a>
+                const section = button.textContent.toLowerCase().replace(' ', '-').replace('đọc-hiểu', 'reading').replace('nghe-hiểu', 'listening');
                 showSection(section, button);
             });
         });
@@ -273,6 +274,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
     };
+
+    window.nextQuestion = function() {
+        console.log("Next question clicked");
+        // Logic cho câu hỏi tiếp theo (cần triển khai thêm)
+    };
+});
 
     window.nextQuestion = function() {
         console.log("Next question clicked");
