@@ -55,143 +55,40 @@ const hiraganaOrder = [
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM loaded");
 
-    // Fallback hiển thị container và auth-container
-    const container = document.querySelector('.container');
-    const authContainer = document.querySelector('#auth-container');
-    if (container) container.style.display = 'block';
-    if (authContainer) authContainer.style.display = 'block';
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
 
-    // Kiểm tra cả .nav-btn (menu) và .level-btn (cấp độ)
-    const navButtons = document.querySelectorAll('.nav-btn, .level-btn');
-    if (!navButtons || navButtons.length === 0) {
-        console.warn("Study buttons not found. Check .nav-btn or .level-btn in HTML.");
-    } else {
-        navButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault(); // Ngăn điều hướng mặc định nếu là <a>
-                let section = button.textContent.toLowerCase().replace(' ', '-')
-                    .replace('đọc-hiểu', 'reading')
-                    .replace('nghe-hiểu', 'listening');
-                // Nếu là nút cấp độ (N1-N5), chuyển hướng đến /level/{level}
-                if (button.classList.contains('level-btn')) {
-                    const level = section.replace('n', ''); // Lấy N1, N2, v.v.
-                    window.location.href = `/level/${level}`;
-                } else {
-                    showSection(section, button);
-                }
-            });
-        });
-    }
-
-    // Flashcard logic
-    const flashcards = window.vocabData || vocabularyData || []; // Fallback
-    let currentCardIndex = 0;
-    let isFlipped = false;
-
-    function switchTab(event) {
-        const section = event.target.dataset.section;
-        if (!section) return;
-
-        console.log("Switching to section:", section);
-        const contents = document.querySelectorAll(
-            '.vocab-content, .kanji-content, .grammar-content, .exercise-content, .flashcard-content'
-        );
-        contents.forEach(el => el.style.display = 'none');
-
-        const target = document.querySelector(`.${section}-content`);
-        if (target) {
-            target.style.display = 'block';
-        }
-
-        if (section === 'flashcard') {
-            displayFlashcards();
-        }
-    }
-
-    function displayFlashcards() {
-        const flashcardContainer = document.querySelector('.flashcard-content');
-        if (!flashcardContainer || flashcards.length === 0) {
-            if (flashcardContainer) {
-                flashcardContainer.innerHTML = '<p>Chưa có flashcard.</p>';
-            }
-            return;
-        }
-
-        const card = flashcards[currentCardIndex];
-        flashcardContainer.innerHTML = `
-            <div class="flashcard-item ${isFlipped ? 'flipped' : ''}">
-                <div class="flashcard-front">${card.japanese}</div>
-                <div class="flashcard-back">${card.reading} - ${card.meaning}</div>
-            </div>
-            <div class="flashcard-controls">
-                <button onclick="prevCard()">⬅ Quay lại</button>
-                <button onclick="nextCard()">▶ Tiếp theo</button>
-                <button onclick="flipCard()">👁️ Lật thẻ</button>
-                <button onclick="markAsKnown()">✅ Đã nhớ</button>
-            </div>
-        `;
-    }
-
-    window.flipCard = function () {
-        isFlipped = !isFlipped;
-        displayFlashcards();
-    };
-
-    window.nextCard = function () {
-        if (currentCardIndex < flashcards.length - 1) {
-            currentCardIndex++;
-            isFlipped = false;
-            displayFlashcards();
-        }
-    };
-
-    window.prevCard = function () {
-        if (currentCardIndex > 0) {
-            currentCardIndex--;
-            isFlipped = false;
-            displayFlashcards();
-        }
-    };
-
-    window.markAsKnown = function () {
-        flashcards.splice(currentCardIndex, 1);
-        if (currentCardIndex >= flashcards.length) {
-            currentCardIndex = Math.max(0, flashcards.length - 1);
-        }
-        displayFlashcards();
-    };
-
-    // Định nghĩa các hàm auth
+    // Đăng nhập
     window.login = function () {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
+
         if (username && password) {
-            document.getElementById('auth-message').textContent = "Đăng nhập thành công!";
-            document.getElementById('auth-container').style.display = 'none';
-            document.getElementById('user-info').style.display = 'block';
-            document.getElementById('current-user').textContent = username;
+            localStorage.setItem("currentUser", username);
+            window.location.href = "/main";
         } else {
             document.getElementById('auth-message').textContent = "Vui lòng nhập tài khoản và mật khẩu!";
         }
     };
 
+    // Đăng ký (giả lập)
     window.register = function () {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        if (username && password) {
+        if (usernameInput.value && passwordInput.value) {
             document.getElementById('auth-message').textContent = "Đăng ký thành công! Vui lòng đăng nhập.";
         } else {
             document.getElementById('auth-message').textContent = "Vui lòng nhập tài khoản và mật khẩu!";
         }
     };
 
+    // Quên mật khẩu
     window.showResetPassword = function () {
         document.getElementById('reset-password-section').style.display = 'block';
     };
 
+    // Đặt lại mật khẩu
     window.resetPassword = function () {
-        const newPassword = document.getElementById('new-password').value;
-        if (newPassword) {
+        const newPass = document.getElementById('new-password').value;
+        if (newPass) {
             document.getElementById('auth-message').textContent = "Mật khẩu đã được đặt lại!";
             document.getElementById('reset-password-section').style.display = 'none';
         } else {
@@ -199,89 +96,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.logout = function () {
-        document.getElementById('user-info').style.display = 'none';
-        document.getElementById('auth-container').style.display = 'block';
-        document.getElementById('current-user').textContent = '';
-        document.getElementById('username').value = '';
-        document.getElementById('password').value = '';
-        document.getElementById('auth-message').textContent = '';
-    };
+    // Nếu đang ở trang main.html → Hiển thị user và gắn sự kiện cho N1–N5
+    if (document.querySelector('#user-info')) {
+        const currentUser = localStorage.getItem("currentUser") || "";
+        if (!currentUser) {
+            window.location.href = "/";
+            return;
+        }
+        document.getElementById('current-user').textContent = currentUser;
 
-    window.showSection = function (section, button) {
-        const sections = document.querySelectorAll('.card');
-        sections.forEach(s => s.style.display = 'none');
-        const targetSection = document.getElementById(`${section}-section`) || document.getElementById(section);
-        if (targetSection) targetSection.style.display = 'block';
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        if (button) button.classList.add('active');
-    };
-
-    window.nextQuestion = function () {
-        // Logic cho câu hỏi tiếp theo (cần triển khai thêm)
-    };
-
-    // Chỉ gắn sự kiện nếu có study-buttons
-    const studyButtons = document.querySelectorAll('.study-buttons button');
-    if (studyButtons.length > 0) {
-        studyButtons.forEach(btn => {
-            btn.addEventListener('click', switchTab);
+        document.querySelectorAll('.level-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const level = btn.dataset.level;
+                window.location.href = `/level/${level}`;
+            });
         });
-        const vocabBtn = document.querySelector('.study-buttons button[data-section="vocabulary"]');
-        if (vocabBtn) vocabBtn.click();
     }
 
-    // Hiển thị bài nghe nếu có
-    displayListening();
+    // Đăng xuất
+    window.logout = function () {
+        localStorage.removeItem("currentUser");
+        window.location.href = "/";
+    };
 });
-
-// Giữ nguyên hàm displayListening
-function displayListening() {
-    const listeningContainer = document.querySelector('.listening-content');
-    if (!listeningContainer) return;
-
-    listeningContainer.innerHTML = (listeningData || []).map((item, index) => `
-        <div class="listening-tab-item">
-            <h4>${item.title}</h4>
-            <p>${item.description}</p>
-            <audio controls style="width: 100%; margin-bottom: 10px;">
-                <source src="${item.audio}" type="audio/mp3" />
-                Trình duyệt của bạn không hỗ trợ audio.
-            </audio>
-            <div class="fill-toggle" data-index="${index}" style="cursor: pointer; color: #2563eb; font-weight: bold; margin-bottom: 8px;">
-                🔸 Trả lời câu hỏi
-            </div>
-            <div class="script-toggle" data-index="${index}" style="cursor: pointer; color: green; font-weight: bold; margin-bottom: 6px;">
-                📄 Bài nghe
-            </div>
-            <div id="script-text-${index}" style="display: none; white-space: pre-wrap; border-left: 3px solid #ccc; padding-left: 10px; margin-bottom: 12px;">
-                ${item.script || "<i>Chưa có nội dung bài nghe</i>"}
-            </div>
-            <div class="fill-question" id="fill-question-${index}" style="display: none;">
-                ${item.questions.map((q, i) => `
-                    <div style="margin-bottom: 10px;">
-                        <label>${q.question}</label><br/>
-                        <input type="text" placeholder="${q.placeholder}" style="width: 100%; padding: 8px; margin-top: 4px;" />
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `).join('');
-
-    document.querySelectorAll('.fill-toggle').forEach(el => {
-        el.addEventListener('click', () => {
-            const index = el.getAttribute('data-index');
-            const target = document.getElementById(`fill-question-${index}`);
-            target.style.display = (target.style.display === 'none') ? 'block' : 'none';
-        });
-    });
-
-    document.querySelectorAll('.script-toggle').forEach(el => {
-        el.addEventListener('click', () => {
-            const index = el.getAttribute('data-index');
-            const target = document.getElementById(`script-text-${index}`);
-            target.style.display = (target.style.display === 'none') ? 'block' : 'none';
-        });
-    });
-}
 
