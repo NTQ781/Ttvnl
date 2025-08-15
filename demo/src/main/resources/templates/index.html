@@ -6,6 +6,7 @@
     <title>Nihongo Gakushyu- Học Tiếng Nhật</title>
     <link rel="stylesheet" th:href="@{/styles.css}" href="/styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Định nghĩa favicon để tránh lỗi 404 mặc định -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon" onerror="this.remove(); console.warn('Favicon not found, ignored.');">
 </head>
 <body>
@@ -14,7 +15,6 @@
     <div id="auth-container" style="
       max-width:400px;
       margin:40px auto;
-      display:none;
       padding: 30px;
       border-radius: 20px;
       background: rgba(255, 255, 255, 0.2);
@@ -22,6 +22,7 @@
       -webkit-backdrop-filter: blur(15px);
       border: 1px solid rgba(255, 255, 255, 0.3);
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      display: block; /* Fallback hiển thị nếu JS không chạy */
     ">
       <h2 style="text-align:center;margin-bottom:20px;color:#1e293b;">日本語学習</h2>
 
@@ -49,7 +50,9 @@
     </div>
 
     <!-- Giao diện chính -->
-    <div class="container" style="display:none;">
+    <div class="container" style="
+      display: block; /* Fallback hiển thị nếu JS không chạy */
+    ">
         <!-- Chào mừng -->
         <div id="user-info" style="text-align:right; font-weight:bold; padding:5px 10px;">
             <span style="font-size: 18px; vertical-align: middle; margin-right: 6px;">🧙</span>
@@ -86,13 +89,6 @@
                         <button class="nav-btn" onclick="showSection('katakana', this)">Katakana</button>
                         <button class="nav-btn" onclick="showSection('reading', this)">Đọc-hiểu</button>
                         <button class="nav-btn" onclick="showSection('listening', this)">Nghe-hiểu</button>
-                    </div>
-                    <div class="study-buttons">
-                        <button class="btn-vocab" onclick="showSection('vocab')">📝 Từ vựng</button>
-                        <button class="btn-kanji" onclick="showSection('kanji')">🔤 Kanji</button>
-                        <button class="btn-grammar" onclick="showSection('grammar')">📘 Ngữ pháp</button>
-                        <button class="btn-exercise" onclick="showSection('exercise')">📝 Bài tập</button>
-                        <button class="btn-flashcard" onclick="showSection('flashcard')">🃏 Flashcard</button>
                     </div>
                 </div>
             </header>
