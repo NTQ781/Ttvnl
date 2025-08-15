@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nihongo Gakushyu - Trang chính</title>
+    <link rel="stylesheet" th:href="@{/styles.css}" href="/styles.css" />
+</head>
+<body>
+<div class="container">
+    <div id="user-info" style="text-align:right; font-weight:bold; padding:5px 10px;">
+        Xin chào, <span id="current-user"></span>!
+        <button onclick="logout()" class="nav-btn">🚪 Đăng xuất</button>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="japanese-flag"></div>
+                <h1 onclick="location.href='/main'">日本語学習</h1>
+            </div>
+        </div>
+    </header>
+
+    <div style="display: flex; justify-content: center; margin-top: 30px;">
+        <div class="card" id="level-section" style="width: 550px;">
+            <h2 style="text-align: center;">Chọn cấp độ học</h2>
+            <button class="level-btn" data-level="n5">🔵 N5</button>
+            <button class="level-btn" data-level="n4">🟢 N4</button>
+            <button class="level-btn" data-level="n3">🟡 N3</button>
+            <button class="level-btn" data-level="n2">🟠 N2</button>
+            <button class="level-btn" data-level="n1">🔴 N1</button>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/script.js}" src="/script.js"></script>
+</body>
+</html>
