@@ -190,3 +190,31 @@ function displayListening() {
         });
     });
 }
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM loaded");
+    // Hiển thị container hoặc auth-container làm mặc định
+    const container = document.querySelector('.container');
+    const authContainer = document.querySelector('#auth-container');
+    if (container) container.style.display = 'block'; // Fallback hiển thị giao diện chính
+    if (authContainer) authContainer.style.display = 'block'; // Fallback hiển thị đăng nhập
+
+    // Đảm bảo các hàm như showSection hoạt động
+    window.showSection = function(section, button) {
+        console.log("Showing section:", section);
+        const sections = document.querySelectorAll('.card');
+        sections.forEach(s => s.style.display = 'none');
+        const targetSection = document.getElementById(`${section}-section`) || document.getElementById(`${section}`);
+        if (targetSection) targetSection.style.display = 'block';
+        // Highlight button
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+    };
+
+    // Hàm mẫu cho các sự kiện khác
+    window.login = function() { console.log("Login clicked"); };
+    window.register = function() { console.log("Register clicked"); };
+    window.showResetPassword = function() { console.log("Reset password clicked"); };
+    window.resetPassword = function() { console.log("Reset password confirmed"); };
+    window.logout = function() { console.log("Logout clicked"); };
+    window.nextQuestion = function() { console.log("Next question clicked"); };
+});
