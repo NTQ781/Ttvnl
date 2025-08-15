@@ -62,15 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (container) container.style.display = 'block';
     if (authContainer) authContainer.style.display = 'block';
 
-    // Sử dụng .nav-btn cho menu điều hướng (Hiragana, Katakana, v.v.)
-    const navButtons = document.querySelectorAll('.nav-btn');
+    // Kiểm tra cả .nav-btn (menu) và .level-btn (cấp độ)
+    const navButtons = document.querySelectorAll('.nav-btn, .level-btn');
     if (!navButtons || navButtons.length === 0) {
-        console.error("Nav buttons not found. Check .nav-btn in HTML.");
+        console.error("Study buttons not found. Check .nav-btn or .level-btn in HTML.");
     } else {
         navButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault(); // Ngăn điều hướng mặc định nếu là <a>
                 let section = button.textContent.toLowerCase().replace(' ', '-').replace('đọc-hiểu', 'reading').replace('nghe-hiểu', 'listening');
+                // Nếu là nút cấp độ (N1-N5), chuyển hướng đến /level/{level}
                 if (button.classList.contains('level-btn')) {
                     const level = section.replace('n', ''); // Lấy N1, N2, v.v.
                     window.location.href = `/level/${level}`;
@@ -222,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Logic cho câu hỏi tiếp theo (cần triển khai thêm)
     };
 
-    // Gắn sự kiện cho tab-switching (flashcard)
+    // Gắn sự kiện cho tab-switching (flashcard) nếu có .study-buttons
     const studyButtons = document.querySelectorAll('.study-buttons button');
     if (studyButtons && studyButtons.length > 0) {
         studyButtons.forEach(btn => {
