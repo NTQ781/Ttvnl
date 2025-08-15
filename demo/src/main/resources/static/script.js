@@ -199,16 +199,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (container) container.style.display = 'block';
     if (authContainer) authContainer.style.display = 'block';
 
-    // Thay .study-buttons bằng .nav-btn (dành cho menu điều hướng)
-    const navButtons = document.querySelectorAll('.nav-btn');
-    if (!navButtons || navButtons.length === 0) {
-        console.error("Nav buttons not found");
+    // Thay .study-buttons bằng .nav-btn (cho menu điều hướng) hoặc .level-btn (cho nút cấp độ)
+    const studyButtons = document.querySelectorAll('.nav-btn'); // Thử với .nav-btn trước
+    // Nếu muốn dùng .level-btn cho N1-N5, thay bằng: const studyButtons = document.querySelectorAll('.level-btn');
+    if (!studyButtons || studyButtons.length === 0) {
+        console.error("Study buttons not found. Check .nav-btn or .level-btn in HTML.");
     } else {
-        navButtons.forEach(button => {
+        studyButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault(); // Ngăn điều hướng mặc định nếu là <a>
-                const section = button.textContent.toLowerCase().replace(' ', '-').replace('đọc-hiểu', 'reading').replace('nghe-hiểu', 'listening');
-                showSection(section, button);
+                let section = button.textContent.toLowerCase().replace(' ', '-').replace('đọc-hiểu', 'reading').replace('nghe-hiểu', 'listening');
+                // Nếu là nút cấp độ (N1-N5), chuyển hướng đến /level/{level}
+                if (button.classList.contains('level-btn')) {
+                    const level = section.replace('n', ''); // Lấy N1, N2, v.v.
+                    window.location.href = `/level/${level}`;
+                } else {
+                    showSection(section, button);
+                }
             });
         });
     }
@@ -274,12 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
     };
-
-    window.nextQuestion = function() {
-        console.log("Next question clicked");
-        // Logic cho câu hỏi tiếp theo (cần triển khai thêm)
-    };
-});
 
     window.nextQuestion = function() {
         console.log("Next question clicked");
