@@ -70,12 +70,12 @@ header {
     background-image: url("https://1.bp.blogspot.com/-g-wChnBkdvw/U7pGUIu2PqI/AAAAAAAAHfU/n4gBFoDRWM4/s1600/quoc+ky+nhat+ban+-+du+hoc+nhat+ban.gif");
 }
 
-.nav-menu {
+.nav {
     display: flex;
     gap: 20px;
 }
 
-.nav-btn {
+#hiragana, katakana {
     background: linear-gradient(45deg, #667eea, #764ba2);
     color: white;
     border: none;
@@ -88,7 +88,7 @@ header {
     letter-spacing: 1px;
 }
 
-.nav-btn:hover {
+#hiragana, katakana:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
