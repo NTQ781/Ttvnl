@@ -5,6 +5,95 @@
   <title th:text="${title} ?: 'Học tiếng Nhật'">Học tiếng Nhật</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link rel="stylesheet" th:href="@{/styles.css}" href="/styles.css"/>
+      <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #c1e1c5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        .header {
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 50px;
+            vertical-align: middle;
+        }
+        .header h1 {
+            display: inline;
+            color: #ff0000;
+            font-size: 2em;
+            vertical-align: middle;
+        }
+        .nav-buttons button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .nav-buttons button:nth-child(1) { background-color: #0000ff; color: white; }
+        .nav-buttons button:nth-child(2) { background-color: #ff0000; color: white; }
+        .nav-buttons button:nth-child(3) { background-color: #00ff00; color: black; }
+        .nav-buttons button:nth-child(4) { background-color: #ffff00; color: black; }
+        .welcome, .level-select {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid #87ceeb;
+            border-radius: 10px;
+            background-color: #e0ffff;
+        }
+        .welcome h2, .level-select h2 {
+            margin: 0 0 10px 0;
+            color: #ff69b4;
+        }
+        .level-select button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .level-select button:nth-child(1) { background-color: #0000ff; color: white; }
+        .level-select button:nth-child(2) { background-color: #00ff00; color: white; }
+        .level-select button:nth-child(3) { background-color: #ffff00; color: black; }
+        .level-select button:nth-child(4) { background-color: #ffa500; color: white; }
+        .level-select button:nth-child(5) { background-color: #ff0000; color: white; }
+        .user-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .user-info button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            color: #ff4500;
+        }
+        .flower {
+            width: 20px;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
 <header class="site-header">
