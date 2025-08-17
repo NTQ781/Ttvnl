@@ -1086,7 +1086,7 @@ public class HomeController {
         session.invalidate(); // xóa session
         return "redirect:/"; // quay về login
     }
-}
+
 
     @GetMapping("/level/{level}")
     public String levelPage(@PathVariable String level, Model model) {
