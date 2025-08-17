@@ -75,6 +75,26 @@ header {
     gap: 20px;
 }
 
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    color: #2d3748;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
 #hiragana, katakana {
     background: linear-gradient(45deg, #667eea, #764ba2);
     color: white;
