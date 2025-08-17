@@ -1041,11 +1041,15 @@ public String login(@ModelAttribute("user") User user, Model model) {
 
 // XỬ LÝ ĐĂNG KÝ
 @PostMapping("/register")
-public String register(@ModelAttribute("user") User user, Model model) {
-    // TODO: thêm logic lưu user mới vào DB
-    model.addAttribute("message", "Đăng ký thành công, hãy đăng nhập!");
-    model.addAttribute("user", new User()); // reset form
-    return "login"; // quay lại login.html (form chung)
+public String processRegister(@ModelAttribute("user") User user, Model model) {
+    boolean ok = userService.register(user.getUsername(), user.getPassword(), user.getEmail());
+    if (ok) {
+        model.addAttribute("message", "Đăng ký thành công! Vui lòng đăng nhập.");
+        return "login"; // chuyển về trang login
+    } else {
+        model.addAttribute("message", "Tên tài khoản đã tồn tại hoặc không hợp lệ.");
+        return "register"; // ở lại trang đăng ký
+    }
 }
 
 // XỬ LÝ RESET PASSWORD
