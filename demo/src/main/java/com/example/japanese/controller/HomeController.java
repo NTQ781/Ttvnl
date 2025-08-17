@@ -1017,10 +1017,42 @@ public class HomeController {
         new Exercise("すみません、えきは　どこ___　ありますか？", Arrays.asList("に", "で", "を"), "に", "N5")
     );
 
-    @GetMapping("/login")
-public String loginPage() {
-    return "login";  // sẽ render login.html trong templates
+// HIỂN THỊ FORM LOGIN + REGISTER
+@GetMapping("/login")
+public String showLogin(Model model) {
+    model.addAttribute("user", new User());
+    return "login"; // trả về login.html (gộp giao diện)
 }
+
+// XỬ LÝ ĐĂNG NHẬP
+@PostMapping("/login")
+public String login(@ModelAttribute("user") User user, Model model) {
+    if("admin".equals(user.getUsername()) && "123".equals(user.getPassword())) {
+        return "redirect:/main"; // login thành công thì sang trang main.html
+    } else {
+        model.addAttribute("message", "Sai tài khoản hoặc mật khẩu!");
+        return "login"; // quay lại login.html + hiển thị thông báo
+    }
+}
+
+// XỬ LÝ ĐĂNG KÝ
+@PostMapping("/register")
+public String register(@ModelAttribute("user") User user, Model model) {
+    // TODO: thêm logic lưu user mới vào DB
+    model.addAttribute("message", "Đăng ký thành công, hãy đăng nhập!");
+    model.addAttribute("user", new User()); // reset form
+    return "login"; // quay lại login.html (form chung)
+}
+
+// XỬ LÝ RESET PASSWORD
+@PostMapping("/reset-password")
+public String resetPassword(@RequestParam String newPassword, Model model) {
+    // TODO: xử lý lưu mật khẩu mới
+    model.addAttribute("message", "Mật khẩu đã được đặt lại thành công.");
+    model.addAttribute("user", new User());
+    return "login"; // quay lại login.html
+}
+
 
 @GetMapping("/main")
 public String index(Model model) {
