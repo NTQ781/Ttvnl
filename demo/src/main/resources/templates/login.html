@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>日本語学習 - Đăng nhập & Đăng ký</title>
+  <title>日本語学習 - Đăng nhập</title>
   <style>
     body {
       margin: 0;
@@ -81,13 +81,16 @@
   <div class="auth-box">
     <h2>日本語学習</h2>
 
-    <input id="username" type="text" placeholder="Tài khoản">
-    <input id="password" type="password" placeholder="Mật khẩu">
+    <!-- Form đăng nhập -->
+    <form th:action="@{/login}" method="post" th:object="${user}">
+      <input th:field="*{username}" type="text" placeholder="Tài khoản" required>
+      <input th:field="*{password}" type="password" placeholder="Mật khẩu" required>
 
-    <div class="btn-group">
-      <button onclick="login()" class="nav-btn" style="flex:1;">Đăng nhập</button>
-      <button onclick="register()" class="nav-btn" style="flex:1;">Đăng ký</button>
-    </div>
+      <div class="btn-group">
+        <button type="submit" class="nav-btn" style="flex:1;">Đăng nhập</button>
+        <a th:href="@{/register}" class="nav-btn" style="flex:1;text-align:center;line-height:40px;text-decoration:none;">Đăng ký</a>
+      </div>
+    </form>
 
     <div style="text-align: center; margin-top: 15px;">
       <a href="#" onclick="showResetPassword()">🔑 Quên mật khẩu?</a>
@@ -95,35 +98,19 @@
 
     <!-- Reset mật khẩu -->
     <div id="reset-password-section" style="display:none;margin-top:20px;">
-      <input id="new-password" type="password" placeholder="Nhập mật khẩu mới">
-      <button onclick="resetPassword()" class="nav-btn" style="width:100%;margin-top:10px;">Xác nhận đặt lại mật khẩu</button>
+      <form th:action="@{/reset-password}" method="post">
+        <input type="password" name="newPassword" placeholder="Nhập mật khẩu mới" required>
+        <button type="submit" class="nav-btn" style="width:100%;margin-top:10px;">Xác nhận đặt lại mật khẩu</button>
+      </form>
     </div>
 
-    <div id="auth-message"></div>
+    <!-- Hiển thị thông báo từ server -->
+    <div id="auth-message" th:text="${message}"></div>
   </div>
 
   <script>
-    function login() {
-      document.getElementById("auth-message").innerText = "Đang xử lý đăng nhập...";
-      // TODO: Gọi API login
-    }
-
-    function register() {
-      document.getElementById("auth-message").innerText = "Đang xử lý đăng ký...";
-      // TODO: Gọi API register
-    }
-
     function showResetPassword() {
       document.getElementById("reset-password-section").style.display = "block";
-    }
-
-    function resetPassword() {
-      const newPass = document.getElementById("new-password").value;
-      if(newPass.trim() === "") {
-        document.getElementById("auth-message").innerText = "Vui lòng nhập mật khẩu mới!";
-      } else {
-        document.getElementById("auth-message").innerText = "Mật khẩu đã được đặt lại thành công.";
-      }
     }
   </script>
 
