@@ -4,15 +4,13 @@ public class Grammar {
     private String structure;
     private String explanation;
     private String example;
-    private String exampleMeaning;
     private String level;
 
-    // Constructor with 5 parameters
-    public Grammar(String structure, String explanation, String example, String exampleMeaning, String level) {
+    // Constructor with 4 parameters
+    public Grammar(String structure, String explanation, String example, String level) {
         this.structure = structure;
         this.explanation = explanation;
         this.example = example;
-        this.exampleMeaning = exampleMeaning;
         this.level = level;
     }
 
@@ -25,9 +23,6 @@ public class Grammar {
 
     public String getExample() { return example; }
     public void setExample(String example) { this.example = example; }
-
-    public String getExampleMeaning() { return exampleMeaning; }
-    public void setExampleMeaning(String exampleMeaning) { this.exampleMeaning = exampleMeaning; }
 
     public String getLevel() { return level; }
     public void setLevel(String level) { this.level = level; }
