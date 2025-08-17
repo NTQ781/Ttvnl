@@ -1,18 +1,13 @@
 package com.example.japanese.model;
 
 public class KanaCharacter {
+    private String character;
     private String romaji;
-    private String kana;
 
-    public KanaCharacter() {}
-    public KanaCharacter(String romaji, String kana) {
-        this.romaji = romaji;
-        this.kana = kana;
+    public KanaCharacter(String character, String romaji) {
+        this.character = character; this.romaji = romaji;
     }
 
+    public String getCharacter() { return character; }
     public String getRomaji() { return romaji; }
-    public String getKana() { return kana; }
-
-    public void setRomaji(String romaji) { this.romaji = romaji; }
-    public void setKana(String kana) { this.kana = kana; }
 }
