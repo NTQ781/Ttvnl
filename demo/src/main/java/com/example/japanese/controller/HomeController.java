@@ -1025,68 +1025,71 @@ public class HomeController {
 @Autowired
     private UserService userService;
 
-    // ====== LOGIN ======
-    // Hiển thị form login
-    @GetMapping("/")
-    public String showLoginPage() {
-        return "index"; // index.html là form login
+    // HIỂN THỊ FORM LOGIN/REGISTER (giao diện chung login.html)
+    @GetMapping("/login")
+    public String showLogin(Model model) {
+        model.addAttribute("user", new User());
+        return "login"; // login.html chứa cả form đăng nhập & đăng ký
     }
 
-    // Xử lý login
+    // XỬ LÝ ĐĂNG NHẬP
     @PostMapping("/login")
-    public String login(@RequestParam String username,
-                        @RequestParam String password,
-                        HttpSession session,
-                        Model model) {
-        User user = userService.login(username, password);
-        if (user != null) {
-            session.setAttribute("user", user); // lưu user vào session
-            return "redirect:/main"; // chuyển sang main.html
+    public String login(@ModelAttribute("user") User user, Model model) {
+        // Demo tạm hardcode admin, sau này thay bằng userService.login(...)
+        if ("admin".equals(user.getUsername()) && "123".equals(user.getPassword())) {
+            return "redirect:/main"; // login thành công thì sang main.html
         } else {
-            model.addAttribute("error", "Sai tên đăng nhập hoặc mật khẩu!");
-            return "index";
+            model.addAttribute("message", "Sai tài khoản hoặc mật khẩu!");
+            model.addAttribute("user", new User());
+            return "login";
         }
     }
 
-    // ====== REGISTER ======
-    // Hiển thị form đăng ký
+    // HIỂN THỊ FORM ĐĂNG KÝ (cũng dùng login.html)
     @GetMapping("/register")
-    public String showRegisterPage() {
-        return "register"; // register.html
+    public String showRegister(Model model) {
+        model.addAttribute("user", new User());
+        return "login"; // cùng trang login.html nhưng hiện form đăng ký
     }
 
-    // Xử lý đăng ký
+    // XỬ LÝ ĐĂNG KÝ
     @PostMapping("/register")
-    public String register(@RequestParam String username,
-                           @RequestParam String password,
-                           @RequestParam String email,
-                           Model model) {
-        boolean success = userService.register(username, password, email);
-        if (success) {
-            model.addAttribute("msg", "Đăng ký thành công! Mời bạn đăng nhập.");
-            return "index"; // quay lại login
+    public String processRegister(@ModelAttribute("user") User user, Model model) {
+        boolean ok = userService.register(user.getUsername(), user.getPassword(), user.getEmail());
+        if (ok) {
+            model.addAttribute("message", "Đăng ký thành công! Vui lòng đăng nhập.");
+            model.addAttribute("user", new User());
+            return "login";
         } else {
-            model.addAttribute("error", "Tên người dùng đã tồn tại hoặc dữ liệu không hợp lệ.");
-            return "register";
+            model.addAttribute("message", "Tên tài khoản đã tồn tại hoặc không hợp lệ.");
+            model.addAttribute("user", new User());
+            return "login"; // vẫn trả về login.html nhưng hiển thị form đăng ký
         }
     }
 
-    // ====== MAIN ======
+    // XỬ LÝ RESET PASSWORD
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestParam String newPassword, Model model) {
+        // TODO: gọi userService để lưu mật khẩu mới
+        model.addAttribute("message", "Mật khẩu đã được đặt lại thành công.");
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
+    // ĐIỀU HƯỚNG TRANG CHÍNH (main.html)
     @GetMapping("/main")
-    public String showMainPage(HttpSession session) {
-        if (session.getAttribute("user") == null) {
-            return "redirect:/"; // chưa login thì về login
-        }
+    public String mainPage(Model model) {
+        model.addAttribute("title", "日本語学習");
         return "main"; // main.html
     }
 
-    // ====== LOGOUT ======
+    // XỬ LÝ LOGOUT
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate(); // xóa session
-        return "redirect:/"; // quay về login
+    public String logout(Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("message", "Bạn đã đăng xuất thành công.");
+        return "login";
     }
-
 
     @GetMapping("/level/{level}")
     public String levelPage(@PathVariable String level, Model model) {
