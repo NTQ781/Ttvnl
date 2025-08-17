@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.japanese.model.User;
+import com.example.japanese.service.UserService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -1020,7 +1021,8 @@ public class HomeController {
         new Exercise("どようびは　なにを　___か？", Arrays.asList("します", "いきます", "のみます"), "します", "N5"),
         new Exercise("すみません、えきは　どこ___　ありますか？", Arrays.asList("に", "で", "を"), "に", "N5")
     );
-
+@Autowired
+private UserService userService;
 // HIỂN THỊ FORM LOGIN + REGISTER
 @GetMapping("/login")
 public String showLogin(Model model) {
