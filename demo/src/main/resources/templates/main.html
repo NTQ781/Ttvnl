@@ -5,101 +5,14 @@
   <title th:text="${title} ?: 'Học tiếng Nhật'">Học tiếng Nhật</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link rel="stylesheet" th:href="@{/styles.css}" href="/styles.css"/>
-          <style>
-        body {
-            background-color: #c1e1c5;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 600px;
-            text-align: center;
-        }
-        .header {
-            margin-bottom: 20px;
-        }
-        .header img {
-            width: 50px;
-            vertical-align: middle;
-        }
-        .header h1 {
-            display: inline;
-            color: #ff0000;
-            font-size: 24px;
-            vertical-align: middle;
-        }
-        .button-group {
-            margin: 20px 0;
-        }
-        .button-group button {
-            padding: 10px 20px;
-            margin: 0 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .button-group .hiragana-btn { background-color: #007bff; color: white; }
-        .button-group .katakana-btn { background-color: #ff0000; color: white; }
-        .button-group .doc-hieu-btn { background-color: #17a2b8; color: white; }
-        .button-group .nghe-hieu-btn { background-color: #28a745; color: white; }
-        .welcome-box, .level-box {
-            background-color: #e9f5ea;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: left;
-        }
-        .welcome-box h2, .level-box h2 {
-            color: #333;
-            margin-top: 0;
-        }
-        .level-box button {
-            padding: 10px;
-            margin: 5px;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .level-box .n5 { background-color: #007bff; color: white; }
-        .level-box .n4 { background-color: #28a745; color: white; }
-        .level-box .n3 { background-color: #ffc107; color: white; }
-        .level-box .n2 { background-color: #fd7e14; color: white; }
-        .level-box .n1 { background-color: #dc3545; color: white; }
-        .user-info {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-        .user-info button {
-            background-color: #6c757d;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .flower {
-            width: 20px;
-            vertical-align: middle;
-        }
-    </style>
+       
 </head>
 <body>
 <header class="site-header">
+  <nav class="logo">
+    <nav class="japanese-flag">
+    </nav>
+  </nav>
   <nav class="nav">
     <a href="#" data-section="hiragana">Hiragana</a>
     <a href="#" data-section="katakana">Katakana</a>
