@@ -1041,7 +1041,10 @@ public String login(@ModelAttribute("user") User user, Model model) {
         return "login"; // quay lại login.html + hiển thị thông báo
     }
 }
-
+@GetMapping("/register")
+public String showRegisterPage() {
+    return "login";  // trả về register.html
+}
 // XỬ LÝ ĐĂNG KÝ
 @PostMapping("/register")
 public String processRegister(@ModelAttribute("user") User user, Model model) {
