@@ -1023,55 +1023,69 @@ public class HomeController {
         new Exercise("すみません、えきは　どこ___　ありますか？", Arrays.asList("に", "で", "を"), "に", "N5")
     );
 @Autowired
-private UserService userService;
-// HIỂN THỊ FORM LOGIN + REGISTER
-@GetMapping("/login")
-public String showLogin(Model model) {
-    model.addAttribute("user", new User());
-    return "login"; // trả về login.html (gộp giao diện)
-}
+    private UserService userService;
 
-// XỬ LÝ ĐĂNG NHẬP
-@PostMapping("/login")
-public String login(@ModelAttribute("user") User user, Model model) {
-    if("admin".equals(user.getUsername()) && "123".equals(user.getPassword())) {
-        return "redirect:/main"; // login thành công thì sang trang main.html
-    } else {
-        model.addAttribute("message", "Sai tài khoản hoặc mật khẩu!");
-        return "login"; // quay lại login.html + hiển thị thông báo
+    // ====== LOGIN ======
+    // Hiển thị form login
+    @GetMapping("/")
+    public String showLoginPage() {
+        return "index"; // index.html là form login
     }
-}
-@GetMapping("/register")
-public String showRegisterPage() {
-    return "login";  // trả về register.html
-}
-// XỬ LÝ ĐĂNG KÝ
-@PostMapping("/register")
-public String processRegister(@ModelAttribute("user") User user, Model model) {
-    boolean ok = userService.register(user.getUsername(), user.getPassword(), user.getEmail());
-    if (ok) {
-        model.addAttribute("message", "Đăng ký thành công! Vui lòng đăng nhập.");
-        return "login"; // chuyển về trang login
-    } else {
-        model.addAttribute("message", "Tên tài khoản đã tồn tại hoặc không hợp lệ.");
-        return "register"; // ở lại trang đăng ký
+
+    // Xử lý login
+    @PostMapping("/login")
+    public String login(@RequestParam String username,
+                        @RequestParam String password,
+                        HttpSession session,
+                        Model model) {
+        User user = userService.login(username, password);
+        if (user != null) {
+            session.setAttribute("user", user); // lưu user vào session
+            return "redirect:/main"; // chuyển sang main.html
+        } else {
+            model.addAttribute("error", "Sai tên đăng nhập hoặc mật khẩu!");
+            return "index";
+        }
     }
-}
 
-// XỬ LÝ RESET PASSWORD
-@PostMapping("/reset-password")
-public String resetPassword(@RequestParam String newPassword, Model model) {
-    // TODO: xử lý lưu mật khẩu mới
-    model.addAttribute("message", "Mật khẩu đã được đặt lại thành công.");
-    model.addAttribute("user", new User());
-    return "login"; // quay lại login.html
-}
+    // ====== REGISTER ======
+    // Hiển thị form đăng ký
+    @GetMapping("/register")
+    public String showRegisterPage() {
+        return "register"; // register.html
+    }
 
+    // Xử lý đăng ký
+    @PostMapping("/register")
+    public String register(@RequestParam String username,
+                           @RequestParam String password,
+                           @RequestParam String email,
+                           Model model) {
+        boolean success = userService.register(username, password, email);
+        if (success) {
+            model.addAttribute("msg", "Đăng ký thành công! Mời bạn đăng nhập.");
+            return "index"; // quay lại login
+        } else {
+            model.addAttribute("error", "Tên người dùng đã tồn tại hoặc dữ liệu không hợp lệ.");
+            return "register";
+        }
+    }
 
-@GetMapping("/main")
-public String index(Model model) {
-    model.addAttribute("title", "日本語学習");
-    return "main";
+    // ====== MAIN ======
+    @GetMapping("/main")
+    public String showMainPage(HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/"; // chưa login thì về login
+        }
+        return "main"; // main.html
+    }
+
+    // ====== LOGOUT ======
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // xóa session
+        return "redirect:/"; // quay về login
+    }
 }
 
     @GetMapping("/level/{level}")
