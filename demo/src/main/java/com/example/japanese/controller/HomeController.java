@@ -1017,6 +1017,11 @@ public class HomeController {
         new Exercise("すみません、えきは　どこ___　ありますか？", Arrays.asList("に", "で", "を"), "に", "N5")
     );
 
+    @GetMapping("/login")
+public String loginPage() {
+    return "login";  // sẽ render login.html trong templates
+}
+
 @GetMapping("/main")
 public String index(Model model) {
     model.addAttribute("title", "日本語学習");
