@@ -1,19 +1,27 @@
-package com.example.japanese.model;
-
 public class Kanji {
     private String kanji;
     private String onyomi;
     private String kunyomi;
     private String meaning;
-    private String level;
+    private String example;
+    private String level; // hoặc field gì đó bạn muốn thêm
 
-    public Kanji(String kanji, String onyomi, String kunyomi, String meaning, String level) {
-        this.kanji = kanji; this.onyomi = onyomi; this.kunyomi = kunyomi; this.meaning = meaning; this.level = level;
+    public Kanji(String kanji, String onyomi, String kunyomi, String meaning, String example) {
+        this.kanji = kanji;
+        this.onyomi = onyomi;
+        this.kunyomi = kunyomi;
+        this.meaning = meaning;
+        this.example = example;
     }
 
-    public String getKanji() { return kanji; }
-    public String getOnyomi() { return onyomi; }
-    public String getKunyomi() { return kunyomi; }
-    public String getMeaning() { return meaning; }
-    public String getLevel() { return level; }
+    //  Constructor 6 tham số
+    public Kanji(String kanji, String onyomi, String kunyomi, String meaning, String example, String level) {
+        this.kanji = kanji;
+        this.onyomi = onyomi;
+        this.kunyomi = kunyomi;
+        this.meaning = meaning;
+        this.example = example;
+        this.level = level;
+    }
+
 }
