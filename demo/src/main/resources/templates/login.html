@@ -1,22 +1,131 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi">
 <head>
-  <meta charset="utf-8"/>
-  <title>Đăng nhập</title>
-  <link rel="stylesheet" th:href="@{/styles.css}" href="/styles.css"/>
+  <meta charset="UTF-8">
+  <title>日本語学習 - Đăng nhập & Đăng ký</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #a7f3d0, #93c5fd);
+    }
+
+    .auth-box {
+      max-width: 400px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #1e293b;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #cbd5e0;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .nav-btn {
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to right, #2563eb, #1d4ed8);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .nav-btn:hover {
+      background: linear-gradient(to right, #1d4ed8, #1e40af);
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    a {
+      font-size: 0.95rem;
+      color: #2563eb;
+      text-decoration: underline;
+    }
+
+    #auth-message {
+      color: red;
+      text-align: center;
+      margin-top: 12px;
+      font-weight: 500;
+    }
+  </style>
 </head>
 <body>
-  <div class="container" style="max-width:420px;margin:80px auto">
-    <h2>Đăng nhập</h2>
-    <p th:if="${error}" th:text="${error}" style="color:red"></p>
-    <form method="post" action="/login">
-      <input name="username" placeholder="Tài khoản" required/>
-      <input name="password" type="password" placeholder="Mật khẩu" required/>
-      <button type="submit">Đăng nhập</button>
-    </form>
-    <p style="margin-top:8px">
-      <a href="/register">Đăng ký</a> • <a href="#">Quên mật khẩu</a>
-    </p>
+
+  <div class="auth-box">
+    <h2>日本語学習</h2>
+
+    <input id="username" type="text" placeholder="Tài khoản">
+    <input id="password" type="password" placeholder="Mật khẩu">
+
+    <div class="btn-group">
+      <button onclick="login()" class="nav-btn" style="flex:1;">Đăng nhập</button>
+      <button onclick="register()" class="nav-btn" style="flex:1;">Đăng ký</button>
+    </div>
+
+    <div style="text-align: center; margin-top: 15px;">
+      <a href="#" onclick="showResetPassword()">🔑 Quên mật khẩu?</a>
+    </div>
+
+    <!-- Reset mật khẩu -->
+    <div id="reset-password-section" style="display:none;margin-top:20px;">
+      <input id="new-password" type="password" placeholder="Nhập mật khẩu mới">
+      <button onclick="resetPassword()" class="nav-btn" style="width:100%;margin-top:10px;">Xác nhận đặt lại mật khẩu</button>
+    </div>
+
+    <div id="auth-message"></div>
   </div>
+
+  <script>
+    function login() {
+      document.getElementById("auth-message").innerText = "Đang xử lý đăng nhập...";
+      // TODO: Gọi API login
+    }
+
+    function register() {
+      document.getElementById("auth-message").innerText = "Đang xử lý đăng ký...";
+      // TODO: Gọi API register
+    }
+
+    function showResetPassword() {
+      document.getElementById("reset-password-section").style.display = "block";
+    }
+
+    function resetPassword() {
+      const newPass = document.getElementById("new-password").value;
+      if(newPass.trim() === "") {
+        document.getElementById("auth-message").innerText = "Vui lòng nhập mật khẩu mới!";
+      } else {
+        document.getElementById("auth-message").innerText = "Mật khẩu đã được đặt lại thành công.";
+      }
+    }
+  </script>
+
 </body>
 </html>
