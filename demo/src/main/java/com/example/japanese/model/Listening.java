@@ -1,19 +1,38 @@
 package com.example.japanese.model;
 
-public class Listening {
+import java.util.List;
+
+public class Reading {
     private String title;
-    private String audioUrl;
+    private String content;
+    private String translation;
+    private List<Question> questions;
 
-    public Listening(String title, String audioUrl) {
+    public Reading(String title, String content, String translation, List<Question> questions) {
         this.title = title;
-        this.audioUrl = audioUrl;
+        this.content = content;
+        this.translation = translation;
+        this.questions = questions;
     }
 
-    // Getter + Setter
-    public String getTitle() {
-        return title;
-    }
-    public String getAudioUrl() {
-        return audioUrl;
+    public String getTitle() { return title; }
+    public String getContent() { return content; }
+    public String getTranslation() { return translation; }
+    public List<Question> getQuestions() { return questions; }
+
+    public static class Question {
+        private String question;
+        private String answer;
+        private String translation;
+
+        public Question(String question, String answer, String translation) {
+            this.question = question;
+            this.answer = answer;
+            this.translation = translation;
+        }
+
+        public String getQuestion() { return question; }
+        public String getAnswer() { return answer; }
+        public String getTranslation() { return translation; }
     }
 }
