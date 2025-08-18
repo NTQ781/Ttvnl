@@ -1378,7 +1378,7 @@ public List<Listening> apiListenings(@RequestParam(required = false) String leve
         model.addAttribute("message", "Bạn đã đăng xuất thành công.");
         return "login";
     }
-GetMapping("/doc-hieu")
+@GetMapping("/doc-hieu")
 public String docHieuPage() {
     return "main"; // tên file main.html
 }
