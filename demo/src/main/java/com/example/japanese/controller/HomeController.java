@@ -1292,24 +1292,18 @@ private static final List<Listening> listeningData = List.of(
         "N5"
     )
 );
-@org.springframework.web.bind.annotation.GetMapping("/api/readings")
+@GetMapping("/api/readings")
 @ResponseBody
-public List<Reading> apiReadings(@RequestParam(required = false) String level) {
-    if (level == null || level.isBlank()) return readingData;
-    return readingData.stream()
-            .filter(r -> level.equalsIgnoreCase(r.getLevel()))
-            .collect(Collectors.toList());
+public List<Reading> getReadings() {
+    return readingData;
 }
 
-@org.springframework.web.bind.annotation.GetMapping("/api/listenings")
+@GetMapping("/api/listenings")
 @ResponseBody
-public List<Listening> apiListenings(@RequestParam(required = false) String level) {
-    if (level == null || level.isBlank()) return listeningData;
-    return listeningData.stream()
-            .filter(l -> level.equalsIgnoreCase(l.getLevel()))
-            .collect(Collectors.toList());
+public List<Listening> getListenings() {
+    return listeningData;
 }
-    
+
 @Autowired
     private UserService userService;
 
