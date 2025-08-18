@@ -58,7 +58,6 @@ const hiraganaData = [
   { char: "ん", romaji: "n", audio: "/audio/hiragana/n.mp3" }
 ];
 
-
 const katakanaData = [
   { char: "ア", romaji: "a", audio: "/audio/katakana/a.mp3" },
   { char: "イ", romaji: "i", audio: "/audio/katakana/i.mp3" },
@@ -117,7 +116,6 @@ const katakanaData = [
 
   { char: "ン", romaji: "n", audio: "/audio/katakana/n.mp3" }
 ];
-
 
 // ========== SHOW SECTIONS ==========
 function showSection(id) {
@@ -298,5 +296,14 @@ function showLevel(level) {
 
 // ========== INIT ==========
 window.onload = () => {
+  // mặc định hiện Hiragana
   showSection("hiragana");
+
+  // gắn sự kiện cho menu nav
+  document.querySelectorAll(".nav li").forEach(item => {
+    item.addEventListener("click", () => {
+      const sectionId = item.getAttribute("data-section");
+      if (sectionId) showSection(sectionId);
+    });
+  });
 };
