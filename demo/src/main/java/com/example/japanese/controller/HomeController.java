@@ -1292,17 +1292,18 @@ private static final List<Listening> listeningData = List.of(
         "N5"
     )
 );
-@GetMapping("/api/readings")
-@ResponseBody
-public List<Reading> getReadings() {
-    return readingData;
-}
+ @GetMapping("/reading")
+    public String readingPage(Model model) {
+        model.addAttribute("readings", readingData);
+        return "reading"; // file reading.html
+    }
 
-@GetMapping("/api/listenings")
-@ResponseBody
-public List<Listening> getListenings() {
-    return listeningData;
-}
+    // Mapping cho Listening
+    @GetMapping("/listening")
+    public String listeningPage(Model model) {
+        model.addAttribute("listenings", listeningData);
+        return "listening"; // file listening.html
+    }
 
 @Autowired
     private UserService userService;
