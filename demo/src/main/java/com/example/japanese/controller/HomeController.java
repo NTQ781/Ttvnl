@@ -1025,6 +1025,7 @@ public class HomeController {
         new Exercise("どようびは　なにを　___か？", Arrays.asList("します", "いきます", "のみます"), "します", "N5"),
         new Exercise("すみません、えきは　どこ___　ありますか？", Arrays.asList("に", "で", "を"), "に", "N5")
     );
+    List<String> words = vocabularyRepository.findAllWords(); 
 private static final List<Reading> readingData = List.of(
     new Reading(
         "Bài 1: Cuộc sống hàng ngày - 日常生活",
@@ -1377,14 +1378,28 @@ public List<Listening> apiListenings(@RequestParam(required = false) String leve
         model.addAttribute("message", "Bạn đã đăng xuất thành công.");
         return "login";
     }
-@GetMapping("/api/readings")
-public List<Reading> getReadings() {
-    return readingData;
+GetMapping("/doc-hieu")
+public String docHieuPage() {
+    return "main"; // tên file main.html
 }
 
-@GetMapping("/api/listenings")
-public List<Listening> getListenings() {
-    return listeningData;
+// API trả JSON danh sách đọc hiểu cho JavaScript
+@GetMapping("/api/doc-hieu")
+@ResponseBody
+public List<Reading> getAllReadings() {
+    return readingRepository.findAll();
+}
+
+@GetMapping("/nghe-hieu")
+public String ngheHieuPage() {
+    return "main";
+}
+
+// API trả JSON danh sách nghe hiểu cho JavaScript
+@GetMapping("/api/nghe-hieu")
+@ResponseBody
+public List<Listening> getAllListenings() {
+    return listeningRepository.findAll();
 }
     
     @GetMapping("/level/{level}")
