@@ -5,29 +5,28 @@
   <title th:text="${title} ?: 'Học tiếng Nhật'">Học tiếng Nhật</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link rel="stylesheet" th:href="@{/styles.css}" href="/styles.css"/>
-       
 </head>
 <body>
 <header class="site-header">
   <nav class="logo">
-    <nav class="japanese-flag">
-    </nav>
-  <nav>
-      <ul>
-        <li><a href="#" onclick="showSection('hiragana')">Hiragana</a></li>
-        <li><a href="#" onclick="showSection('katakana')">Katakana</a></li>
-        <li><a href="#" onclick="showSection('doc-hieu')">Đọc-Hiểu</a></li>
-        <li><a href="#" onclick="showSection('nghe-hieu')">Nghe-Hiểu</a></li>
-        <li><a href="/logout">Logout</a></li>
-      </ul>
-    </nav>
-  </header>
+    <nav class="japanese-flag"></nav>
+  </nav>
+  <nav class="nav">
+    <ul>
+      <li><a href="#" data-section="hiragana">Hiragana</a></li>
+      <li><a href="#" data-section="katakana">Katakana</a></li>
+      <li><a href="#" data-section="doc-hieu">Đọc-Hiểu</a></li>
+      <li><a href="#" data-section="nghe-hieu">Nghe-Hiểu</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </nav>
+</header>
 
 <main class="container">
   <!-- HIRAGANA -->
   <section id="hiragana" class="content-section" style="display:none">
     <h2>Hiragana</h2>
-    <div id="hiragana-grid"><!-- giữ nguyên/bổ sung JS để render bảng  --></div>
+    <div id="hiragana-grid"><!-- JS sẽ render bảng --></div>
   </section>
 
   <!-- KATAKANA -->
@@ -39,53 +38,33 @@
   <!-- DOC HIEU -->
   <section id="doc-hieu" class="content-section" style="display:none">
     <h2>Đọc-Hiểu</h2>
-    <div id="reading-list"><!-- danh sách bài đọc --></div>
+    <div id="reading-list"><!-- JS sẽ render danh sách bài đọc --></div>
   </section>
 
   <!-- NGHE HIEU -->
   <section id="nghe-hieu" class="content-section" style="display:none">
     <h2>Nghe-Hiểu</h2>
     <div id="listening-list">
-      <!-- ví dụ:
-      <div class="audio-item">
-        <audio controls src="/audio/sample.mp3"></audio>
-        <p>Chủ đề: Chào hỏi cơ bản (N5)</p>
-      </div>
-      -->
+      <!-- JS sẽ render danh sách audio -->
     </div>
   </section>
 
   <!-- LEVELS -->
   <section id="levels" class="content-section" style="display: flex; justify-content: flex-end;">
-    <section class="card" style="width: 550 px;"
-    <h2>Chọn cấp độ học</h2>
-    <ul class="level-list">
-      <li><a th:href="@{/level/N5}">N5</a></li>
-      <li><a th:href="@{/level/N4}">N4</a></li>
-      <li><a th:href="@{/level/N3}">N3</a></li>
-      <li><a th:href="@{/level/N2}">N2</a></li>
-      <li><a th:href="@{/level/N1}">N1</a></li>
-    </ul>
+    <section class="card" style="width: 550px;">
+      <h2>Chọn cấp độ học</h2>
+      <ul class="level-list">
+        <li><a th:href="@{/level/N5}">N5</a></li>
+        <li><a th:href="@{/level/N4}">N4</a></li>
+        <li><a th:href="@{/level/N3}">N3</a></li>
+        <li><a th:href="@{/level/N2}">N2</a></li>
+        <li><a th:href="@{/level/N1}">N1</a></li>
+      </ul>
+    </section>
   </section>
 </main>
 
-<script>
-(function(){
-  function showSection(id){
-    document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
-    var el = document.getElementById(id);
-    if (el) el.style.display = 'block';
-  }
-  document.querySelectorAll('.nav a[data-section]').forEach(a => {
-    a.addEventListener('click', function(e){
-      e.preventDefault();
-      showSection(this.getAttribute('data-section'));
-    });
-  });
-  // Mặc định hiển thị Levels
-  showSection('levels');
-})();
-</script>
+<!-- JS -->
 <script src="/script.js"></script>
 </body>
 </html>
