@@ -105,12 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         document.getElementById('current-user').textContent = currentUser;
 
-        document.querySelectorAll('.level-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const level = btn.dataset.level;
-                window.location.href = `/level/${level}`;
-            });
-        });
     }
 
     // Đăng xuất
