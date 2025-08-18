@@ -4,6 +4,8 @@ import com.example.japanese.model.Vocabulary;
 import com.example.japanese.model.Kanji;
 import com.example.japanese.model.Grammar;
 import com.example.japanese.model.Exercise;
+import com.example.japanese.model.Reading;
+import com.example.japanese.model.Listening;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.japanese.model.User;
 import com.example.japanese.service.UserService;
 
@@ -1022,6 +1025,290 @@ public class HomeController {
         new Exercise("どようびは　なにを　___か？", Arrays.asList("します", "いきます", "のみます"), "します", "N5"),
         new Exercise("すみません、えきは　どこ___　ありますか？", Arrays.asList("に", "で", "を"), "に", "N5")
     );
+private static final List<Reading> readingData = List.of(
+    new Reading(
+        "Bài 1: Cuộc sống hàng ngày - 日常生活",
+        """
+        わたしは まいにち 6じに おきます。そして、7じに あさごはんを たべます。
+        """,
+        "Tôi dậy lúc 6 giờ mỗi sáng và ăn sáng lúc 7 giờ.",
+        List.of(
+            new Reading.QA("わたしは 何時に おきますか？", "6時に起きます。", "Tôi thức dậy lúc 6 giờ."),
+            new Reading.QA("あさごはんを たべるのは 何時ですか？", "7時に朝ごはんを食べます。", "Ăn sáng lúc 7 giờ.")
+        ),
+        "N5"
+    ),
+    new Reading(
+        "Bài 2: Cuối tuần của tôi - 私の週末",
+        """
+        現在、私は会社員をしています。どようびと にちようびに、わたしは ともだちと あそびます。えいがを みたり、こうえんで さんぽしたり します。
+        """,
+        "Hiện tại, tôi đang là một nhân viên văn phòng. Thứ 7 và chủ nhật, tôi cùng bạn đi chơi. Chúng tôi cùng xem phim, đi dạo trong công viên",
+        List.of(
+            new Reading.QA("どんなことを しますか？", "かいしゃいんです", "Nhân viên văn phòng"),
+            new Reading.QA("どようびと にちようびに 何を しますか？", "えいがを みたり、こうえんで さんぽしたり します。", "Chúng tôi cùng xem phim, đi dạo trong công viên")
+        ),
+        "N5"
+    ),
+    new Reading(
+        "Bài 3: Mua sắm -  買い物",
+        """
+        スーパーに行く前に、私はメモを作ります。今日は牛乳と卵とパンを買います。でも、スーパーに行ったとき、チョコレートも買ってしまいました。
+        """,
+        "Trước khi đi siêu thị, tôi ghi chú: Hôm nay tôi sẽ mua sữa, trứng và bánh mì. Nhưng khi đi siêu thị, tôi cũng mua một ít sô cô la.",
+        List.of(
+            new Reading.QA("メモに書いてあったものは何ですか？", "今日は牛乳と卵とパンを買います。でも、スーパーに行ったとき", "Hôm nay tôi sẽ mua sữa, trứng và bánh mì"),
+            new Reading.QA("チョコレートはメモにありましたか？", "チョコレートはメモにありましたか？", "メモにはチョコレートはありません")
+        ),
+        "N5"
+    ),
+    new Reading(
+        "Bài 4: Thời tiết - 天気",
+        """
+        昨日は朝から雨でした。午後になると、風も強くなりました。だから、友だちとの約束をキャンセルしました。
+        """,
+        "Hôm qua trời mưa từ sáng. Chiều gió mạnh hơn nên tôi phải hủy bỏ kế hoạch đi chơi với bạn.",
+        List.of(
+            new Reading.QA("昨日はどんな天気でしたか？", "昨日は朝から雨でした。午後になると、風も強くなりました。", "Hôm qua trời mưa từ sáng. Chiều gió mạnh hơn"),
+            new Reading.QA("どうして友だちに会いませんでしたか？", "雨が降ったため、午後は風が強くなりました。", "Vì trời mưa, chiều thì gió mạnh hơn ")
+        ),
+        "N5"
+    ),
+    new Reading(
+        "Bài 5: Con chó của Tanaka -  田中さんの犬",
+        """
+        田中さんの家には白くて小さい犬がいます。その犬の名前は「しろ」です。毎日、田中さんと一緒に散歩します。
+        """,
+        "Tanaka-san có một chú chó nhỏ màu trắng. Tên của nó là Shiro. Nó đi dạo cùng Tanaka-san mỗi ngày.",
+        List.of(
+            new Reading.QA("犬の名前は何ですか？", "その犬の名前は「しろ」です。", "Tên của nó là Shiro."),
+            new Reading.QA("田中さんは毎日犬と何をしますか？", "毎日、田中さんと一緒に散歩します。", "Nó đi dạo cùng Tanaka-san mỗi ngày.")
+        ),
+        "N5"
+    ),
+    new Reading(
+        "Bài 6: 4 mùa của Nhật Bản - 日本の四季 ",
+        """
+        日本には春、夏、秋、冬の四つの季節があります。春は桜が咲いて、とてもきれいです。夏は暑いですが、海や花火大会を楽しめます。秋は涼しくて、山や公園の木が赤や黄色になります。冬は雪が降る地域もあり、スキーや温泉が人気です。季節によって、いろいろな楽しみ方があります。
+        """,
+        "Nhật Bản có bốn mùa: xuân, hạ, thu, đông. Mùa xuân, hoa anh đào nở rộ, đẹp tuyệt vời. Mùa hè nóng nực nhưng bạn vẫn có thể tận hưởng bãi biển và lễ hội pháo hoa. Mùa thu mát mẻ, cây cối trên núi và công viên chuyển sang màu đỏ vàng. Mùa đông, tuyết rơi ở một số khu vực, và trượt tuyết cùng suối nước nóng là những hoạt động được ưa chuộng. Có rất nhiều cách để tận hưởng mỗi mùa.",
+        List.of(
+            new Reading.QA("春にはどんな花が咲きますか？", "春は桜が咲いて、とてもきれいです", "Mùa xuân, hoa anh đào nở rộ, đẹp tuyệt vời."),
+            new Reading.QA("冬はなぜ人気がありますか？", "スキーや温泉が人気です", "trượt tuyết cùng suối nước nóng là những hoạt động đục ưa chuộng")
+        ),
+        "N5"
+    ),
+    new Reading(
+        "Bài 7: Chuyến đi đầu tiên đến Nhật Bản - 初めての日本旅行",
+        """
+        去年の夏、私は初めて日本へ旅行しました。東京や京都、大阪などをまわりました。東京では高いビルやにぎやかな街を見て、京都ではお寺や神社を訪れました。大阪ではお好み焼きやたこ焼きを食べました。日本の人たちはとても親切で、道に迷ったときも丁寧に教えてくれました。また日本に行きたいと思っています。
+        """,
+        "Hè năm ngoái, tôi đi du lịch Nhật Bản lần đầu tiên. Tôi đã đi vòng quanh Tokyo, Kyoto, Osaka và nhiều thành phố khác. Ở Tokyo, tôi được chiêm ngưỡng những tòa nhà cao tầng và những con phố nhộn nhịp, còn ở Kyoto, tôi được ghé thăm các đền chùa. Ở Osaka, tôi được thưởng thức okonomiyaki và takoyaki. Người Nhật rất tốt bụng, họ đã kiên nhẫn giúp đỡ tôi khi tôi bị lạc. Tôi rất muốn quay lại Nhật Bản.",
+        List.of(
+            new Reading.QA("大阪で何をしましたか？", "大阪ではお好み焼きやたこ焼きを食べました", "Ở Osaka, tôi đã ăn okonomiyaki và takoyaki."),
+            new Reading.QA("日本の人たちはどうでしたか？", "日本の人たちはとても親切で、道に迷ったときも丁寧に教えてくれました", "Người Nhật rất tốt bụng, họ đã kiên nhẫn giúp đỡ tôi khi tôi bị lạc. ")
+        ),
+        "N5"
+    ),
+    new Reading(
+        "Bài 8: Bạn làm gì cho sức khỏe của mình - 健康のためにしていること",
+        """
+        私は健康のために毎朝ジョギングをしています。最初は10分しか走れませんでしたが、今は30分ぐらい走れるようになりました。また、毎日野菜をたくさん食べるようにしています。たまに甘いものも食べますが、食べすぎないように気をつけています。健康な体は、毎日の小さな努力から作られると思います。
+        """,
+        "Tôi chạy bộ mỗi sáng để giữ gìn sức khỏe. Ban đầu, tôi chỉ chạy được 10 phút, nhưng giờ tôi có thể chạy được khoảng 30 phút. Tôi cũng cố gắng ăn nhiều rau mỗi ngày. Thỉnh thoảng tôi cũng ăn đồ ngọt, nhưng cố gắng không ăn quá nhiều. Tôi tin rằng một cơ thể khỏe mạnh được xây dựng từ những nỗ lực nhỏ mỗi ngày.",
+        List.of(
+            new Reading.QA("ジョギングはどれくらいできるようになりましたか？", "最初は10分しか走れませんでしたが、今は30分ぐらい走れるようになりました。", "Ban đầu, tôi chỉ chạy được 10 phút, nhưng giờ tôi có thể chạy được khoảng 30 phút"),
+            new Reading.QA("この人は健康のために何をしていますか？", "私は健康のために毎朝ジョギングをしています。毎日野菜をたくさん食べるようにしています。", "Tôi chạy bộ mỗi sáng để giữ gìn sức khỏe. Tôi cố gắng ăn nhiều rau mỗi ngày.")
+        ),
+        "N5"
+    ),
+    new Reading(
+        "Bài 9: Cuộc sống của sinh viên quốc tế - 留学生の生活",
+        """
+        私はベトナムから来た留学生です。今、日本の大学で経済を勉強しています。最初は日本語が難しくて、授業についていくのが大変でした。でも、毎日少しずつ勉強して、先生や友だちにもたくさん助けてもらいました。今では、日本での生活にも慣れて、アルバイトも始めました。将来は日本の会社で働きたいと思っています。
+        """,
+        "Tôi là du học sinh đến từ Việt Nam. Hiện tôi đang theo học ngành kinh tế tại một trường đại học Nhật Bản. Ban đầu, tiếng Nhật khá khó và tôi gặp khó khăn trong việc theo kịp các bài giảng. Tuy nhiên, tôi đã cố gắng học mỗi ngày và nhận được rất nhiều sự giúp đỡ từ thầy cô và bạn bè. Hiện tại, tôi đã quen với cuộc sống ở Nhật và bắt đầu đi làm thêm. Trong tương lai, tôi muốn làm việc cho một công ty Nhật Bản.",
+        List.of(
+            new Reading.QA("最初に何が大変でしたか？", "最初は日本語が難しくて、授業についていくのが大変でした。", " Ban đầu, tiếng Nhật khá khó và tôi gặp khó khăn trong việc theo kịp các bài giảng."),
+            new Reading.QA("今はどんな生活をしていますか？", "今では、日本での生活にも慣れて、アルバイトも始めました。", "Hiện tại, tôi đã quen với cuộc sống ở Nhật và bắt đầu đi làm thêm.")
+        ),
+        "N5"
+    ),
+    new Reading(
+        "Bài 10: Ngày khó quên - 忘れられない日",
+        """
+        先月のある日、私は大学へ行く途中で財布を落としてしまいました。気がついたときには、もうバスの中でした。とても困って、すぐにバスを降りて元の道を戻りました。しかし、どこにも財布は見つかりませんでした。その日は大切なテストがあったのに、試験のことも忘れるくらい心配していました。仕方なく大学へ行ったら、受付で「これ、あなたのですか？」と言われて、なんと誰かが私の財布を届けてくれていたのです。中身も何もなくなっていませんでした。親切な人がいるんだなと、本当に感動しました。その日から、私も困っている人を助けるように心がけています。
+        """,
+        "Một ngày nọ trong tháng trước, trên đường đến trường đại học, tôi đã làm rơi ví. Khi nhận ra thì tôi đã ở trên xe buýt. Tôi rất lo lắng, lập tức xuống xe và quay lại con đường đã đi. Tuy nhiên, tôi không tìm thấy ví ở đâu cả. Hôm đó tôi có một bài kiểm tra quan trọng, nhưng tôi lo lắng đến mức quên cả việc thi cử. Không còn cách nào khác, tôi đành đến trường, và tại quầy tiếp tân, một người hỏi: “Đây có phải ví của bạn không?” Thật bất ngờ, ai đó đã nhặt và mang ví đến giao lại. Mọi thứ trong ví vẫn còn nguyên vẹn. Tôi thực sự xúc động vì lòng tốt của người đó. Kể từ hôm ấy, tôi luôn cố gắng giúp đỡ những người gặp khó khăn.",
+        List.of(
+            new Reading.QA("財布が見つからなかったとき、この人はどんな気持ちでしたか？", "心配です", "lo lắng"),
+            new Reading.QA("あなたなら、このような経験のあとで何を考えますか？", "もっと注意して、同じような困難な状況にある他の人を助けるように自分自身に言い聞かせてください。", "Nhắc nhở bản thân cẩn thận hơn và giúp đỡ người khác trong những hoàn cảnh khó khăn tương tự")
+        ),
+        "N5"
+    )
+);
+
+// ========= SEED DỮ LIỆU LISTENING =========
+private static final List<Listening> listeningData = List.of(
+    new Listening(
+        "第13課 問題 1 - Mondai 1",
+        "/audio/listening/mondai13-1.mp3",
+        "Nghe đoạn hội thoại và trả lời câu hỏi.",
+        """
+        1: あなたは　サントスさんですか？
+        2: おなまえは？
+        3: なんさいですか？
+        4: アメリカ人ですか？
+        5: かいしゃいんですか？
+        """,
+        List.of("1.", "2.", "3.", "4.", "5."),
+        "N5"
+    ),
+    new Listening(
+        "第13課 問題 3 - Mondai 1",
+        "/audio/listening/mondai13-2.mp3",
+        "Nghe đoạn hội thoại và trả lời câu hỏi.",
+        """
+        1: お国はどちらですか？
+        2: うちはどちらですか？
+        3: あなたのとけいはどこのとけいですか？
+        4: あなたのカメラは日本のですか？
+        5: あなたのカメラはいくらですか？
+        """,
+        List.of("1.", "2.", "3.", "4.", "5."),
+        "N5"
+    ),
+    new Listening(
+        "第13課 問題 2 - Mondai 1",
+        "/audio/listening/mondai13-3.mp3",
+        "Nghe đoạn hội thoại và trả lời câu hỏi.",
+        """
+        1: これは　てちょううですか？
+        2: これは　'あ'ですか　'お'ですか？
+        3: これは　なんですか？
+        4: これは　なんの　ざっしですか？
+        5: このかばんはあなたのですか？
+        """,
+        List.of("1.", "2.", "3.", "4.", "5."),
+        "N5"
+    ),
+    new Listening(
+        "第13課 問題 4 - Mondai 1",
+        "/audio/listening/mondai14-4.mp3",
+        "Nghe đoạn hội thoại và trả lời câu hỏi.",
+        """
+        1: 今何時ですか？
+        2: あなたの国の銀行は何時からなんじまですか？
+        3: 毎日なんじにおきますか？
+        4: きのうべんきょうしましたか？
+        5: あなたのうちの電話番号は何番ですか？
+        """,
+        List.of("1.", "2.", "3.", "4.", "5."),
+        "N5"
+    ),
+    new Listening(
+        "第13課 問題 6 - Mondai 1",
+        "/audio/listening/mondai15-5.mp3",
+        "Nghe đoạn hội thoại và trả lời câu hỏi.",
+        """
+        1: あなたはたばこをすいますか？
+        2: まあさ　新聞を読みますか？
+        3: けさ　何を飲みましたか？
+        4: あした　何をしますか？
+        5: いつも　どこで　昼ごはんをたべますか？
+        """,
+        List.of("1.", "2.", "3.", "4.", "5."),
+        "N5"
+    ),
+    new Listening(
+        "第13課 問題 8 - Mondai 1",
+        "/audio/listening/mondai16-6.mp3",
+        "Nghe đoạn hội thoại và trả lời câu hỏi.",
+        """
+        1: 家族は天気ですか？
+        2: あなたの国は暑いですか？
+        3: 仕事は　おもしろいですか？
+        4: あなたの国はどんな国ですか？
+        5: 日本語はどうですか？
+        """,
+        List.of("1.", "2.", "3.", "4.", "5."),
+        "N5"
+    ),
+    new Listening(
+        "第13課 問題 5 - Mondai 1",
+        "/audio/listening/mondai17-7.mp3",
+        "Nghe đoạn hội thoại và trả lời câu hỏi.",
+        """
+        1: 日曜日　どこへ　いきますか？
+        2: 何で　スーパーへ　いきますか？
+        3: だれと　スーパーへ　いきますか？
+        4: きのうどこへいきましたか？
+        5: 誕生日は何月何日ですか？
+        """,
+        List.of("1.", "2.", "3.", "4.", "5."),
+        "N5"
+    ),
+    new Listening(
+        "第13課 問題 9 - Mondai 1",
+        "/audio/listening/mondai18-8.mp3",
+        "Nghe đoạn hội thoại và trả lời câu hỏi.",
+        """
+        1: お母さんは　料理　が上手ですか？
+        2: どんな　スポーツが好きですか？
+        3: 今晩約束がありますか？
+        4: かんじがわかりますか？
+        5: どうして日本語を勉強しますか？
+        """,
+        List.of("1.", "2.", "3.", "4.", "5."),
+        "N5"
+    ),
+    new Listening(
+        "第13課 問題 7 - Mondai 1",
+        "/audio/listening/mondai19-9.mp3",
+        "Nghe đoạn hội thoại và trả lời câu hỏi.",
+        """
+        1: もうばんごはんをたべましたか？
+        2: なんでごはんをたべますか？
+        3: 去年の誕生日にプレゼントもらいましたか？
+        4: お母さんの誕生あげますか？
+        5: 'Thank you' は日本語でなんですか？
+        """,
+        List.of("1.", "2.", "3.", "4.", "5."),
+        "N5"
+    ),
+    new Listening(
+        "第13課 問題 10 - Mondai 1",
+        "/audio/listening/mondai20-10.mp3",
+        "Nghe đoạn hội thoại và trả lời câu hỏi.",
+        """
+        1: あなたは今いきますか
+        2: あなたのうちに犬がいますか
+        3: あなたの部屋に時計がありますか？
+        4: 日本語のじしょはどこにありますか？
+        5: うちの近くに何がありますか？
+        """,
+        List.of("1.", "2.", "3.", "4.", "5."),
+        "N5"
+    )
+);
+@org.springframework.web.bind.annotation.GetMapping("/api/readings")
+@ResponseBody
+public List<Reading> apiReadings(@RequestParam(required = false) String level) {
+    if (level == null || level.isBlank()) return readingData;
+    return readingData.stream()
+            .filter(r -> level.equalsIgnoreCase(r.getLevel()))
+            .collect(Collectors.toList());
+}
+
+@org.springframework.web.bind.annotation.GetMapping("/api/listenings")
+@ResponseBody
+public List<Listening> apiListenings(@RequestParam(required = false) String level) {
+    if (level == null || level.isBlank()) return listeningData;
+    return listeningData.stream()
+            .filter(l -> level.equalsIgnoreCase(l.getLevel()))
+            .collect(Collectors.toList());
+}
+    
 @Autowired
     private UserService userService;
 
