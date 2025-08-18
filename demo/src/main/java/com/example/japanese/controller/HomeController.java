@@ -1372,53 +1372,6 @@ public List<Listening> getListenings() {
         model.addAttribute("message", "Bạn đã đăng xuất thành công.");
         return "login";
     }
- @Autowired
-    private VocabularyRepository vocabularyRepository;
-
-    @Autowired
-    private ReadingRepository readingRepository;
-
-    @Autowired
-    private ListeningRepository listeningRepository;
-
-
-    // -------- VOCABULARY --------
-    @GetMapping("/vocabulary")
-    public String vocabularyPage() {
-        return "main"; // Hiển thị giao diện chính (main.html)
-    }
-
-    @GetMapping("/api/vocabulary")
-    @ResponseBody
-    public List<Vocabulary> getAllVocabulary() {
-        return vocabularyRepository.findAll();
-    }
-
-
-    // -------- READING --------
-    @GetMapping("/doc-hieu")
-    public String docHieuPage() {
-        return "main"; // main.html, phần hiển thị Reading
-    }
-
-    @GetMapping("/api/doc-hieu")
-    @ResponseBody
-    public List<Reading> getAllReadings() {
-        return readingRepository.findAll();
-    }
-
-
-    // -------- LISTENING --------
-    @GetMapping("/nghe-hieu")
-    public String ngheHieuPage() {
-        return "main"; // main.html, phần hiển thị Listening
-    }
-
-    @GetMapping("/api/nghe-hieu")
-    @ResponseBody
-    public List<Listening> getAllListenings() {
-        return listeningRepository.findAll();
-    }
     
     @GetMapping("/level/{level}")
     public String levelPage(@PathVariable String level, Model model) {
