@@ -1378,29 +1378,53 @@ public List<Listening> apiListenings(@RequestParam(required = false) String leve
         model.addAttribute("message", "Bạn đã đăng xuất thành công.");
         return "login";
     }
-@GetMapping("/doc-hieu")
-public String docHieuPage() {
-    return "main"; // tên file main.html
-}
+ @Autowired
+    private VocabularyRepository vocabularyRepository;
 
-// API trả JSON danh sách đọc hiểu cho JavaScript
-@GetMapping("/api/doc-hieu")
-@ResponseBody
-public List<Reading> getAllReadings() {
-    return readingRepository.findAll();
-}
+    @Autowired
+    private ReadingRepository readingRepository;
 
-@GetMapping("/nghe-hieu")
-public String ngheHieuPage() {
-    return "main";
-}
+    @Autowired
+    private ListeningRepository listeningRepository;
 
-// API trả JSON danh sách nghe hiểu cho JavaScript
-@GetMapping("/api/nghe-hieu")
-@ResponseBody
-public List<Listening> getAllListenings() {
-    return listeningRepository.findAll();
-}
+
+    // -------- VOCABULARY --------
+    @GetMapping("/vocabulary")
+    public String vocabularyPage() {
+        return "main"; // Hiển thị giao diện chính (main.html)
+    }
+
+    @GetMapping("/api/vocabulary")
+    @ResponseBody
+    public List<Vocabulary> getAllVocabulary() {
+        return vocabularyRepository.findAll();
+    }
+
+
+    // -------- READING --------
+    @GetMapping("/doc-hieu")
+    public String docHieuPage() {
+        return "main"; // main.html, phần hiển thị Reading
+    }
+
+    @GetMapping("/api/doc-hieu")
+    @ResponseBody
+    public List<Reading> getAllReadings() {
+        return readingRepository.findAll();
+    }
+
+
+    // -------- LISTENING --------
+    @GetMapping("/nghe-hieu")
+    public String ngheHieuPage() {
+        return "main"; // main.html, phần hiển thị Listening
+    }
+
+    @GetMapping("/api/nghe-hieu")
+    @ResponseBody
+    public List<Listening> getAllListenings() {
+        return listeningRepository.findAll();
+    }
     
     @GetMapping("/level/{level}")
     public String levelPage(@PathVariable String level, Model model) {
