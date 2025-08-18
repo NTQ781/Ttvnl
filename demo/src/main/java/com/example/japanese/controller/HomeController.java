@@ -1090,7 +1090,17 @@ public class HomeController {
         model.addAttribute("message", "Bạn đã đăng xuất thành công.");
         return "login";
     }
+@GetMapping("/api/readings")
+@ResponseBody
+public List<Reading> getReadings() {
+    return readingData;
+}
 
+@GetMapping("/api/listenings")
+@ResponseBody
+public List<Listening> getListenings() {
+    return listeningData;
+}
     @GetMapping("/level/{level}")
     public String levelPage(@PathVariable String level, Model model) {
         List<Vocabulary> levelVocab = vocabularyData.stream()
