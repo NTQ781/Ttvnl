@@ -102,6 +102,7 @@ header {
     padding: 12px 24px;
     border-radius: 25px;
     cursor: pointer;
+    width: 300px;
     font-weight: 100px;
     transition: all 0.3s ease;
     text-transform: uppercase;
